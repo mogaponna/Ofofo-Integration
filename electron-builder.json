@@ -65,7 +65,8 @@
         "x": 396,
         "y": 150,
         "type": "link",
-        "path": "/Applications"
+        "path": "/Applications",
+        "name": "Applications"
       }
     ]
   },

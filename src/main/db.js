@@ -1,3 +1,153 @@
+// CRITICAL: Polyfill URL.searchParams for pg-connection-string
+// In packaged Electron apps, URL.searchParams may not be available
+// This MUST run before pg is required
+console.log('[DB] ========================================');
+console.log('[DB] STARTING URL.searchParams POLYFILL');
+console.log('[DB] ========================================');
+(function() {
+  'use strict';
+  const urlModule = require('url');
+  const OriginalURL = urlModule.URL;
+  const OriginalURLSearchParams = urlModule.URLSearchParams;
+  
+  console.log('[DB] OriginalURL type:', typeof OriginalURL);
+  console.log('[DB] OriginalURLSearchParams type:', typeof OriginalURLSearchParams);
+  console.log('[DB] URL.prototype.hasOwnProperty("searchParams"):', OriginalURL.prototype.hasOwnProperty('searchParams'));
+  
+  // Check descriptor
+  const existingDesc = Object.getOwnPropertyDescriptor(OriginalURL.prototype, 'searchParams');
+  console.log('[DB] Existing searchParams descriptor:', existingDesc ? 'EXISTS' : 'NOT FOUND');
+  if (existingDesc) {
+    console.log('[DB] Descriptor details:', {
+      get: typeof existingDesc.get,
+      set: typeof existingDesc.set,
+      value: typeof existingDesc.value,
+      writable: existingDesc.writable,
+      enumerable: existingDesc.enumerable,
+      configurable: existingDesc.configurable
+    });
+  }
+  
+  // Force patch URL.prototype.searchParams - even if it exists, it might not work in Electron
+  // Check if it actually works by testing it
+  let needsPatch = true;
+  let testError = null;
+  try {
+    console.log('[DB] Testing URL.searchParams with: http://example.com?test=1');
+    const testUrl = new OriginalURL('http://example.com?test=1');
+    console.log('[DB] Test URL created:', {
+      href: testUrl.href,
+      search: testUrl.search,
+      hasSearchParams: 'searchParams' in testUrl,
+      searchParamsType: typeof testUrl.searchParams,
+      searchParamsValue: testUrl.searchParams
+    });
+    
+    if (testUrl.searchParams && typeof testUrl.searchParams.get === 'function') {
+      console.log('[DB] searchParams.get is a function, testing...');
+      const testValue = testUrl.searchParams.get('test');
+      console.log('[DB] searchParams.get("test") returned:', testValue);
+      if (testValue === '1') {
+        needsPatch = false;
+        console.log('[DB] ✓ URL.searchParams works natively, no patch needed');
+      } else {
+        console.log('[DB] ✗ URL.searchParams returned wrong value:', testValue, 'expected: 1');
+      }
+    } else {
+      console.log('[DB] ✗ searchParams is not available or not a function');
+      console.log('[DB]   searchParams:', testUrl.searchParams);
+      console.log('[DB]   typeof searchParams:', typeof testUrl.searchParams);
+    }
+  } catch (e) {
+    // If test fails, we need the patch
+    testError = e;
+    console.log('[DB] ✗ URL.searchParams test FAILED with error:', e.message);
+    console.log('[DB]   Error stack:', e.stack);
+  }
+  
+  if (needsPatch) {
+    console.log('[DB] Applying URL.prototype.searchParams polyfill...');
+    // Patch URL.prototype.searchParams
+    Object.defineProperty(OriginalURL.prototype, 'searchParams', {
+      get() {
+        console.log('[DB] [POLYFILL] searchParams getter called');
+        console.log('[DB] [POLYFILL] this:', this ? {
+          href: this.href,
+          search: this.search,
+          type: typeof this
+        } : 'null/undefined');
+        try {
+          if (!this) {
+            console.log('[DB] [POLYFILL] this is null/undefined, returning empty URLSearchParams');
+            return new OriginalURLSearchParams('');
+          }
+          
+          // Try to get search string safely
+          // First check if we can access it without triggering errors
+          let searchStr = '';
+          
+          // Method 1: Try direct property access (safest)
+          try {
+            if (this.search !== undefined && this.search !== null) {
+              searchStr = String(this.search);
+              console.log('[DB] [POLYFILL] Got search from this.search:', searchStr);
+            }
+          } catch (e) {
+            console.log('[DB] [POLYFILL] Method 1 failed:', e.message);
+            // If that fails, try method 2
+            try {
+              // Method 2: Extract from href if available
+              if (this.href) {
+                const queryIndex = String(this.href).indexOf('?');
+                if (queryIndex !== -1) {
+                  const hashIndex = String(this.href).indexOf('#');
+                  const endIndex = hashIndex !== -1 ? hashIndex : this.href.length;
+                  searchStr = String(this.href).substring(queryIndex, endIndex);
+                  console.log('[DB] [POLYFILL] Got search from this.href:', searchStr);
+                }
+              }
+            } catch (e2) {
+              console.log('[DB] [POLYFILL] Method 2 also failed:', e2.message);
+              // Both methods failed, use empty string
+            }
+          }
+          
+          const result = new OriginalURLSearchParams(searchStr);
+          console.log('[DB] [POLYFILL] Returning URLSearchParams with:', searchStr);
+          return result;
+        } catch (e) {
+          console.log('[DB] [POLYFILL] Error in getter:', e.message);
+          console.log('[DB] [POLYFILL] Error stack:', e.stack);
+          // Ultimate fallback
+          return new OriginalURLSearchParams('');
+        }
+      },
+      enumerable: true,
+      configurable: true,
+    });
+    console.log('[DB] ✓ Patched URL.prototype.searchParams for pg-connection-string');
+    
+    // Verify the patch worked
+    try {
+      const verifyUrl = new OriginalURL('http://example.com?verify=2');
+      console.log('[DB] Verifying patch with test URL...');
+      console.log('[DB] Verify URL searchParams type:', typeof verifyUrl.searchParams);
+      console.log('[DB] Verify URL searchParams value:', verifyUrl.searchParams);
+      if (verifyUrl.searchParams && typeof verifyUrl.searchParams.get === 'function') {
+        const verifyValue = verifyUrl.searchParams.get('verify');
+        console.log('[DB] ✓ Patch verified! searchParams.get("verify") =', verifyValue);
+      } else {
+        console.log('[DB] ✗ Patch verification FAILED!');
+      }
+    } catch (e) {
+      console.log('[DB] ✗ Patch verification error:', e.message);
+    }
+  }
+  console.log('[DB] ========================================');
+  console.log('[DB] URL.searchParams POLYFILL COMPLETE');
+  console.log('[DB] ========================================');
+})();
+
 const { Pool } = require('pg');
 require('dotenv').config();
 
@@ -6,13 +156,50 @@ let pool = null;
 
 function getPool() {
   if (!pool) {
+    console.log('[DB] ========================================');
+    console.log('[DB] CREATING DATABASE POOL');
+    console.log('[DB] ========================================');
     const databaseUrl = process.env.DATABASE_URL;
     
     if (!databaseUrl) {
       console.warn('[DB] DATABASE_URL not set. Database operations will fail.');
       return null;
     }
-
+    
+    console.log('[DB] DATABASE_URL exists:', !!databaseUrl);
+    console.log('[DB] DATABASE_URL length:', databaseUrl ? databaseUrl.length : 0);
+    console.log('[DB] DATABASE_URL preview:', databaseUrl ? databaseUrl.substring(0, 50) + '...' : 'N/A');
+    
+    // Test URL parsing before creating Pool
+    try {
+      console.log('[DB] Testing URL parsing with DATABASE_URL...');
+      const urlModule = require('url');
+      const testUrl = new urlModule.URL(databaseUrl, 'postgres://base');
+      console.log('[DB] Test URL created successfully:', {
+        href: testUrl.href ? testUrl.href.substring(0, 50) + '...' : 'N/A',
+        search: testUrl.search,
+        hasSearchParams: 'searchParams' in testUrl,
+        searchParamsType: typeof testUrl.searchParams,
+        searchParamsValue: testUrl.searchParams ? 'EXISTS' : 'UNDEFINED'
+      });
+      
+      if (testUrl.searchParams) {
+        console.log('[DB] ✓ searchParams is available on test URL');
+        try {
+          const entries = Array.from(testUrl.searchParams.entries());
+          console.log('[DB] searchParams entries:', entries);
+        } catch (e) {
+          console.log('[DB] ✗ Error iterating searchParams:', e.message);
+        }
+      } else {
+        console.log('[DB] ✗ searchParams is NOT available on test URL!');
+      }
+    } catch (e) {
+      console.log('[DB] ✗ Error creating test URL:', e.message);
+      console.log('[DB] Error stack:', e.stack);
+    }
+    
+    console.log('[DB] Creating Pool with connectionString...');
     try {
       pool = new Pool({
         connectionString: databaseUrl,
@@ -152,19 +339,30 @@ async function getUser(email) {
  * Optimized: Check first, then update or insert
  */
 async function storeOTP(email, otp, otpExpiry) {
+  console.log('[DB] ========================================');
+  console.log('[DB] storeOTP called for:', email);
+  console.log('[DB] ========================================');
+  
   const db = getPool();
   if (!db) {
+    console.log('[DB] ✗ Database pool is null!');
     throw new Error('Database connection not available');
   }
+  
+  console.log('[DB] Database pool exists:', !!db);
+  console.log('[DB] Pool type:', typeof db);
+  console.log('[DB] Pool constructor:', db.constructor ? db.constructor.name : 'unknown');
 
   try {
     const normalizedEmail = email.toLowerCase().trim();
+    console.log('[DB] Normalized email:', normalizedEmail);
     
     // Simplified: Try update first, if no rows affected, then insert
     // This avoids the need for ON CONFLICT and handles race conditions
     let result;
     
     try {
+      console.log('[DB] Attempting UPDATE query...');
       // Try update first (most common case - user exists)
       const updateResult = await Promise.race([
         db.query(
@@ -173,6 +371,7 @@ async function storeOTP(email, otp, otpExpiry) {
         ),
         new Promise((_, reject) => setTimeout(() => reject(new Error('Query timeout')), 8000))
       ]);
+      console.log('[DB] UPDATE query completed, rows:', updateResult.rows.length);
       
       if (updateResult.rows.length > 0) {
         result = updateResult.rows[0];

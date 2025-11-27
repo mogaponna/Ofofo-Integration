@@ -316,10 +316,18 @@ contextBridge.exposeInMainWorld('electron', {
     // Database operations
     db: {
       sendOTP: async (data) => {
-        return await ipcRenderer.invoke('db-send-otp', data);
+        const result = await ipcRenderer.invoke('db-send-otp', data);
+        // Log the full result for debugging
+        if (!result.success) {
+          console.error('[Preload] sendOTP failed:', result);
+        }
+        return result;
       },
       verifyOTP: async (data) => {
         return await ipcRenderer.invoke('db-verify-otp', data);
+      },
+      checkEmailService: async () => {
+        return await ipcRenderer.invoke('check-email-service');
       },
       getControls: async (data) => {
         return await ipcRenderer.invoke('db-get-controls', data);

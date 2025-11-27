@@ -3,91 +3,85 @@ const path = require('path');
 const fs = require('fs');
 const isDev = require('electron-is-dev');
 const axios = require('axios');
+const crypto = require('crypto');
 
-// CRITICAL: Fix URL/searchParams for Node.js main process
-// Azure SDK libraries use URL.searchParams which can fail in Electron
-// This polyfill ensures URL objects always have searchParams
-// MUST RUN BEFORE ANY OTHER MODULES ARE LOADED
-(function() {
-  'use strict';
-  
-  // Get original URL and URLSearchParams BEFORE any modules use them
-  const urlModule = require('url');
-  const OriginalURL = urlModule.URL;
-  const OriginalURLSearchParams = urlModule.URLSearchParams;
-  
-  // Ensure URLSearchParams exists globally
-  if (typeof global.URLSearchParams === 'undefined') {
-    global.URLSearchParams = OriginalURLSearchParams;
-  }
-  
-  // Override URL constructor with defensive checks
-  const URLWrapper = function(url, base) {
-    // Defensive: Check if url is undefined/null
-    if (url === undefined || url === null) {
-      console.error('[URL Polyfill] URL constructor called with undefined/null:', { url, base });
-      throw new TypeError('Failed to construct URL: Invalid URL');
-    }
-    
-    try {
-      const urlInstance = new OriginalURL(url, base);
-      
-      // Defensive: Check if urlInstance is undefined (shouldn't happen, but be safe)
-      if (!urlInstance) {
-        console.error('[URL Polyfill] URL constructor returned undefined for:', { url, base });
-        throw new TypeError('URL constructor returned undefined');
-      }
-      
-      // Ensure searchParams exists - add it if missing
-      if (!urlInstance.searchParams) {
-        Object.defineProperty(urlInstance, 'searchParams', {
-          get() {
-            try {
-              return new OriginalURLSearchParams(this.search || '');
-            } catch (e) {
-              console.error('[URL Polyfill] Error creating URLSearchParams:', e);
-              return new OriginalURLSearchParams('');
-            }
-          },
-          enumerable: true,
-          configurable: true,
-        });
-      }
-      
-      return urlInstance;
-    } catch (error) {
-      console.error('[URL Polyfill] URL constructor error:', error.message);
-      console.error('[URL Polyfill] URL:', url, 'Base:', base);
-      // Re-throw to maintain original behavior
-      throw error;
-    }
-  };
-  
-  // Copy prototype and static methods
-  URLWrapper.prototype = OriginalURL.prototype;
-  Object.setPrototypeOf(URLWrapper, OriginalURL);
-  
-  // Copy static methods
-  ['canParse', 'createObjectURL', 'parse', 'revokeObjectURL'].forEach(method => {
-    if (typeof OriginalURL[method] === 'function') {
-      URLWrapper[method] = OriginalURL[method];
-    }
-  });
-  
-  // Replace global URL IMMEDIATELY
-  // This is what most code uses, including Azure SDK
-  // Don't try to modify urlModule.URL as it's read-only in some Node.js versions
-  global.URL = URLWrapper;
-  
-  console.log('[Main Process] URL/searchParams polyfill initialized (aggressive mode)');
-})();
+// CRITICAL: Make crypto available globally for Azure SDK
+// Azure SDK uses crypto.randomUUID() which expects crypto to be global
+if (typeof global.crypto === 'undefined') {
+  global.crypto = crypto;
+  console.log('[Main Process] Made crypto available globally for Azure SDK');
+}
+
+// Note: URL.searchParams should be available natively in Node.js 20+ and Electron 28
+// No polyfill needed - if there's an issue, it's likely something else
 
 // Load .env based on environment
 if (!isDev) {
   // In production, load from resources (bundled with app)
   const envPath = path.join(process.resourcesPath, '.env');
-  require('dotenv').config({ path: envPath });
-  console.log('[App] Loaded .env from resources:', envPath);
+  console.log('[App] Looking for .env at:', envPath);
+  console.log('[App] File exists:', fs.existsSync(envPath));
+  
+  if (fs.existsSync(envPath)) {
+    const result = require('dotenv').config({ path: envPath });
+    console.log('[App] Loaded .env from resources:', envPath);
+    console.log('[App] dotenv result:', result.error ? 'ERROR: ' + result.error : 'SUCCESS');
+    if (result.error) {
+      console.error('[App] dotenv error details:', result.error);
+    }
+    
+    // Verify the connection strings were loaded
+    let connStr = process.env.AZURE_COMMUNICATION_SERVICE_CONNECTION_STRING;
+    let dbUrl = process.env.DATABASE_URL;
+    console.log('[App] AZURE_COMMUNICATION_SERVICE_CONNECTION_STRING exists:', !!connStr);
+    console.log('[App] Connection string length:', connStr ? connStr.length : 0);
+    console.log('[App] Connection string preview:', connStr ? connStr.substring(0, 30) + '...' : 'N/A');
+    console.log('[App] DATABASE_URL exists:', !!dbUrl);
+    console.log('[App] DATABASE_URL length:', dbUrl ? dbUrl.length : 0);
+    console.log('[App] DATABASE_URL preview:', dbUrl ? dbUrl.substring(0, 50) + '...' : 'N/A');
+    
+    // If dotenv didn't load it, try manual parsing as fallback
+    if (!connStr) {
+      console.warn('[App] Connection string not loaded by dotenv, trying manual parse...');
+      try {
+        const envContent = fs.readFileSync(envPath, 'utf8');
+        const lines = envContent.split('\n');
+        for (const line of lines) {
+          if (line.trim().startsWith('AZURE_COMMUNICATION_SERVICE_CONNECTION_STRING=')) {
+            const match = line.match(/AZURE_COMMUNICATION_SERVICE_CONNECTION_STRING=(.+)/);
+            if (match && match[1]) {
+              connStr = match[1].trim();
+              // Remove quotes if present
+              if ((connStr.startsWith('"') && connStr.endsWith('"')) || 
+                  (connStr.startsWith("'") && connStr.endsWith("'"))) {
+                connStr = connStr.slice(1, -1);
+              }
+              process.env.AZURE_COMMUNICATION_SERVICE_CONNECTION_STRING = connStr;
+              console.log('[App] Manually loaded connection string, length:', connStr.length);
+              break;
+            }
+          }
+        }
+      } catch (parseError) {
+        console.error('[App] Failed to manually parse .env:', parseError.message);
+      }
+    }
+  } else {
+    console.error('[App] ERROR: .env file not found at:', envPath);
+    console.error('[App] This means environment variables are not loaded!');
+    // Try fallback locations
+    const fallbackPaths = [
+      path.join(__dirname, '../../.env'),
+      path.join(app.getAppPath(), '.env'),
+    ];
+    for (const fallbackPath of fallbackPaths) {
+      if (fs.existsSync(fallbackPath)) {
+        console.log('[App] Found .env at fallback location:', fallbackPath);
+        require('dotenv').config({ path: fallbackPath });
+        break;
+      }
+    }
+  }
 } else {
   // In development, load from project root
   require('dotenv').config();
@@ -276,27 +270,60 @@ ipcMain.handle('db-send-otp', async (event, data) => {
     console.log('[OTP] Step 4: Sending email via Azure...');
     try {
       const emailStartTime = Date.now();
-      await Promise.race([
+      const emailResult = await Promise.race([
         emailService.sendOTPEmail(email, otp),
         new Promise((_, reject) => setTimeout(() => reject(new Error('Email sending timeout')), 20000))
       ]);
+      
+      // Check if email service returned false (client not initialized)
+      if (emailResult === false) {
+        console.error('[OTP] Email service returned false - client not initialized');
+        console.error('[OTP] This means AZURE_COMMUNICATION_SERVICE_CONNECTION_STRING is not set or invalid');
+        // Check the connection string status
+        const connStr = process.env.AZURE_COMMUNICATION_SERVICE_CONNECTION_STRING;
+        console.error('[OTP] Connection string exists:', !!connStr);
+        console.error('[OTP] Connection string length:', connStr ? connStr.length : 0);
+        return { 
+          success: false, 
+          error: 'Email service temporarily unavailable. Please check your Azure Communication Services configuration or contact support.' 
+        };
+      }
+      
       console.log(`[OTP] Email sent in ${Date.now() - emailStartTime}ms`);
       console.log(`[OTP] Total time: ${Date.now() - startTime}ms`);
       return { success: true, message: 'OTP sent to your email' };
     } catch (emailError) {
       console.error('[OTP] Email sending failed:', emailError.message);
       console.error('[OTP] Email error stack:', emailError.stack);
+      console.error('[OTP] Full error object:', JSON.stringify(emailError, Object.getOwnPropertyNames(emailError)));
+      
       // Check if it's a searchParams error
       if (emailError.message && emailError.message.includes('searchParams')) {
         console.error('[OTP] SEARCHPARAMS ERROR IN EMAIL SERVICE!');
         console.error('[OTP] This suggests the Azure SDK is the issue');
         console.error('[OTP] Azure SDK version:', require('@azure/communication-email/package.json')?.version || 'unknown');
+        return { 
+          success: false, 
+          error: 'Email service temporarily unavailable. Please check your Azure Communication Services configuration or contact support.' 
+        };
       }
+      
       // If email fails but DB succeeded, still return success (user can request resend)
-      if (emailError.message.includes('timeout')) {
+      if (emailError.message && emailError.message.includes('timeout')) {
         return { success: false, error: 'Email sending timeout. Please try again.' };
       }
-      return { success: false, error: 'Failed to send email. Please check your email configuration.' };
+      
+      // Return the actual error message for debugging - show the real error!
+      const errorMsg = emailError.message || 'Failed to send email';
+      console.error('[OTP] Returning error to user:', errorMsg);
+      console.error('[OTP] Error type:', typeof emailError);
+      console.error('[OTP] Error constructor:', emailError.constructor?.name);
+      
+      // For now, return the ACTUAL error message so we can see what's really failing
+      return { 
+        success: false, 
+        error: `Email sending failed: ${errorMsg}` // Show actual error for debugging
+      };
     }
   } catch (error) {
     console.error('[OTP] Unexpected error in db-send-otp handler:', error.message);
@@ -310,8 +337,83 @@ ipcMain.handle('db-send-otp', async (event, data) => {
     if (errorMessage.includes('timeout') || errorMessage.includes('Connection')) {
       return { success: false, error: 'Connection timeout. Please check your database connection and try again.' };
     }
+    // Check if it's a searchParams error and provide user-friendly message
+    if (errorMessage.includes('searchParams') || errorMessage.includes('Cannot read properties of undefined')) {
+      console.error('[OTP] searchParams error detected in handler');
+      return { 
+        success: false, 
+        error: 'Email service temporarily unavailable. Please check your Azure Communication Services configuration or contact support.' 
+      };
+    }
     return { success: false, error: errorMessage };
   }
+});
+
+// Diagnostic: Check email service status
+ipcMain.handle('check-email-service', async () => {
+  console.log('[IPC] check-email-service handler called');
+  const connStr = process.env.AZURE_COMMUNICATION_SERVICE_CONNECTION_STRING;
+  const envPath = path.join(process.resourcesPath, '.env');
+  const envExists = fs.existsSync(envPath);
+  
+  let envContent = null;
+  if (envExists) {
+    try {
+      envContent = fs.readFileSync(envPath, 'utf8');
+    } catch (err) {
+      console.error('[Diagnostic] Could not read .env file:', err.message);
+    }
+  }
+  
+  const hasKeyInFile = envContent ? envContent.includes('AZURE_COMMUNICATION_SERVICE_CONNECTION_STRING') : false;
+  const hasKeyInEnv = !!connStr;
+  
+  // Try to get the email client to see if it's initialized
+  let emailClientStatus = 'unknown';
+  let emailClientError = null;
+  try {
+    // Access the internal getEmailClient function
+    const client = emailService.getEmailClient ? emailService.getEmailClient() : null;
+    emailClientStatus = client ? 'initialized' : 'not_initialized';
+    
+    if (!client && connStr) {
+      // Try to initialize it directly to see what error we get
+      try {
+        const { EmailClient } = require('@azure/communication-email');
+        // Test URL polyfill first
+        const testUrl = new global.URL('https://example.com');
+        if (!testUrl.searchParams) {
+          emailClientError = 'URL polyfill not working - searchParams missing';
+          emailClientStatus = 'polyfill_failed';
+        } else {
+          const testClient = new EmailClient(connStr.trim());
+          emailClientStatus = 'can_initialize';
+        }
+      } catch (initError) {
+        emailClientError = initError.message;
+        emailClientStatus = 'init_failed';
+        console.error('[Diagnostic] EmailClient initialization test failed:', initError);
+        console.error('[Diagnostic] Error stack:', initError.stack);
+      }
+    }
+  } catch (err) {
+    emailClientError = err.message;
+    emailClientStatus = 'error';
+    console.error('[Diagnostic] Error checking email client:', err);
+  }
+  
+  return {
+    envFileExists: envExists,
+    envFilePath: envPath,
+    hasKeyInFile,
+    hasKeyInEnv,
+    connectionStringLength: connStr ? connStr.length : 0,
+    connectionStringPreview: connStr ? connStr.substring(0, 30) + '...' : null,
+    allAzureKeys: Object.keys(process.env).filter(k => k.includes('AZURE')),
+    resourcesPath: process.resourcesPath,
+    emailClientStatus,
+    emailClientError,
+  };
 });
 
 // Verify OTP - Only verify, no user creation
