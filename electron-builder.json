@@ -1,0 +1,115 @@
+{
+  "appId": "ai.ofofo.integration-agent",
+  "productName": "Ofofo Integration Agent",
+  "copyright": "Copyright © 2024 Ofofo.ai",
+  "files": [
+    "dist/**/*",
+    "assets/**/*",
+    "public/**/*",
+    "src/main/**/*",
+    "binaries/**/*",
+    "package.json",
+    "node_modules/**/*",
+    ".env"
+  ],
+  "extraResources": [
+    {
+      "from": "binaries",
+      "to": "binaries",
+      "filter": ["**/*"]
+    },
+    {
+      "from": ".env.production",
+      "to": ".env"
+    }
+  ],
+  "directories": {
+    "output": "release",
+    "buildResources": "assets"
+  },
+  "mac": {
+    "category": "public.app-category.developer-tools",
+    "icon": "public/assets/logo.png",
+    "target": [
+      {
+        "target": "dmg",
+        "arch": ["x64", "arm64"]
+      },
+      {
+        "target": "zip",
+        "arch": ["x64", "arm64"]
+      }
+    ],
+    "identity": null,
+    "hardenedRuntime": false,
+    "gatekeeperAssess": false,
+    "entitlements": null,
+    "entitlementsInherit": null,
+    "darkModeSupport": true
+  },
+  "dmg": {
+    "title": "Ofofo Integration Agent",
+    "icon": "public/assets/logo.png",
+    "background": null,
+    "window": {
+      "width": 540,
+      "height": 380
+    },
+    "contents": [
+      {
+        "x": 144,
+        "y": 150,
+        "type": "file"
+      },
+      {
+        "x": 396,
+        "y": 150,
+        "type": "link",
+        "path": "/Applications"
+      }
+    ]
+  },
+  "win": {
+    "target": [
+      {
+        "target": "nsis",
+        "arch": ["x64"]
+      },
+      {
+        "target": "portable",
+        "arch": ["x64"]
+      }
+    ],
+    "icon": "assets/logo.png"
+  },
+  "nsis": {
+    "oneClick": false,
+    "allowToChangeInstallationDirectory": true,
+    "allowElevation": true,
+    "installerIcon": "public/assets/logo.png",
+    "uninstallerIcon": "public/assets/logo.png",
+    "installerHeaderIcon": "public/assets/logo.png",
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true,
+    "shortcutName": "Ofofo Integration Agent"
+  },
+  "linux": {
+    "target": [
+      {
+        "target": "AppImage",
+        "arch": ["x64"]
+      },
+      {
+        "target": "deb",
+        "arch": ["x64"]
+      }
+    ],
+    "category": "Development",
+    "icon": "public/assets/logo.png",
+    "executableName": "ofofo-integration-agent",
+    "synopsis": "Ofofo Compliance Integration Agent",
+    "description": "Automate compliance evidence collection from cloud platforms"
+  },
+  "publish": null
+}
+

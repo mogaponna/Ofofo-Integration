@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/assets/logo.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ofofo Integration Agent</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- URL/searchParams polyfill - must run before any modules -->
+    <script>
+      (function() {
+        'use strict';
+        if (typeof window === 'undefined') return;
+        
+        // Ensure URLSearchParams exists
+        if (typeof URLSearchParams === 'undefined') {
+          window.URLSearchParams = function(init) {
+            this.params = new Map();
+            if (init) {
+              if (typeof init === 'string') {
+                init = init.startsWith('?') ? init.slice(1) : init;
+                init.split('&').forEach(function(pair) {
+                  var parts = pair.split('=');
+                  var key = decodeURIComponent(parts[0] || '');
+                  var value = decodeURIComponent(parts[1] || '');
+                  if (key) this.params.set(key, value);
+                }.bind(this));
+              }
+            }
+            this.get = function(name) { return this.params.get(name) || null; };
+            this.set = function(name, value) { this.params.set(name, value); };
+            this.has = function(name) { return this.params.has(name); };
+            this.delete = function(name) { this.params.delete(name); };
+            this.append = function(name, value) {
+              var existing = this.params.get(name);
+              this.params.set(name, existing ? existing + ',' + value : value);
+            };
+            this.toString = function() {
+              var pairs = [];
+              this.params.forEach(function(value, key) {
+                pairs.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
+              });
+              return pairs.join('&');
+            };
+            this.forEach = function(callback) {
+              this.params.forEach(callback);
+            };
+          };
+        }
+        
+        // Ensure all URL instances have searchParams
+        var OriginalURL = window.URL;
+        if (OriginalURL) {
+          window.URL = function(url, base) {
+            try {
+              var urlInstance = new OriginalURL(url, base);
+              if (!urlInstance.searchParams) {
+                Object.defineProperty(urlInstance, 'searchParams', {
+                  get: function() {
+                    return new URLSearchParams(this.search || '');
+                  },
+                  enumerable: true,
+                  configurable: true
+                });
+              }
+              return urlInstance;
+            } catch (e) {
+              console.error('URL constructor error:', e);
+              throw e;
+            }
+          };
+          window.URL.prototype = OriginalURL.prototype;
+        }
+        
+        // Ensure window.location.searchParams works
+        try {
+          if (window.location && !window.location.searchParams) {
+            Object.defineProperty(window.location, 'searchParams', {
+              get: function() {
+                try {
+                  var url = new URL(window.location.href);
+                  return url.searchParams;
+                } catch (e) {
+                  return new URLSearchParams(window.location.search || '');
+                }
+              },
+              enumerable: true,
+              configurable: true
+            });
+          }
+        } catch (e) {
+          console.warn('Could not add searchParams to window.location:', e);
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/renderer/main.tsx"></script>
+  </body>
+</html>

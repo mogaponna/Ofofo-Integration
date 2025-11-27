@@ -1,0 +1,106 @@
+{
+  "name": "ofofo-integration-agent",
+  "version": "1.0.0",
+  "description": "Ofofo Compliance Integration Agent - Automate evidence collection",
+  "main": "src/main/index.js",
+  "author": "Ofofo.ai",
+  "license": "MIT",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:vite\" \"npm run dev:electron\"",
+    "dev:vite": "vite",
+    "dev:electron": "wait-on http://localhost:5173 && cross-env NODE_ENV=development electron .",
+    "build": "tsc && vite build",
+    "build:electron": "electron-builder --config electron-builder.json",
+    "package": "npm run build && npm run build:electron",
+    "package:mac": "npm run build && electron-builder --mac --config electron-builder.json",
+    "package:win": "npm run build && electron-builder --win --config electron-builder.json",
+    "package:linux": "npm run build && electron-builder --linux --config electron-builder.json",
+    "download-binaries": "node scripts/download-binaries.js",
+    "prebuild:electron": "npm run download-binaries"
+  },
+  "dependencies": {
+    "@azure/arm-authorization": "^9.0.0",
+    "@azure/arm-keyvault": "^3.0.0",
+    "@azure/arm-network": "^33.0.0",
+    "@azure/arm-storage": "^18.1.0",
+    "@azure/communication-email": "^1.1.0",
+    "@azure/identity": "^4.0.0",
+    "@azure/msal-node": "^3.8.3",
+    "@azure/storage-blob": "^12.17.0",
+    "@types/pg": "^8.15.6",
+    "axios": "^1.6.0",
+    "dotenv": "^16.3.1",
+    "electron-is-dev": "^2.0.0",
+    "electron-store": "^8.1.0",
+    "lucide-react": "^0.300.0",
+    "node-fetch": "^2.7.0",
+    "pg": "^8.16.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-markdown": "^10.1.0",
+    "tar": "^7.5.2",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.25",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@types/uuid": "^10.0.0",
+    "@vitejs/plugin-react": "^4.2.0",
+    "autoprefixer": "^10.4.0",
+    "concurrently": "^8.2.0",
+    "cross-env": "^7.0.3",
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.0",
+    "postcss": "^8.4.0",
+    "tailwindcss": "^3.4.0",
+    "typescript": "^5.3.0",
+    "vite": "^5.0.0",
+    "wait-on": "^7.2.0"
+  },
+  "build": {
+    "appId": "ai.ofofo.integration-agent",
+    "productName": "Ofofo Integration Agent",
+    "files": [
+      "dist/**/*",
+      "assets/**/*",
+      "public/**/*",
+      "src/main/**/*",
+      "binaries/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "output": "release",
+      "buildResources": "assets"
+    },
+    "mac": {
+      "category": "public.app-category.developer-tools",
+      "icon": "assets/logo.png",
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "icon": "assets/logo.png"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "category": "Development",
+      "icon": "assets/logo.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  }
+}

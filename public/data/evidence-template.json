@@ -1,0 +1,2072 @@
+{
+  "E-GOV-01": {
+    "area_of_focus": "Cybersecurity & Data Protection Management",
+    "documentation_artifact": "Charter - Cybersecurity Program",
+    "artifact_description": "Documented evidence of a charter to establish and resource the organization's cybersecurity program.",
+    "scf_control_mappings": "GOV-01",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-GOV-02": {
+    "area_of_focus": "Cybersecurity & Data Protection Management",
+    "documentation_artifact": "Charter - Data Privacy Program",
+    "artifact_description": "Documented evidence of a charter to establish and resource the organization's data privacy program.",
+    "scf_control_mappings": "GOV-01\nPRI-01",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-GOV-03": {
+    "area_of_focus": "Cybersecurity & Data Protection Management",
+    "documentation_artifact": "Charter - Cybersecurity Steering Committee",
+    "artifact_description": "Documented evidence of an executive steering committee, or advisory board, that is formed to perform oversight of cybersecurity management decisions and is comprised of key cybersecurity, technology, risk, privacy and business executives.",
+    "scf_control_mappings": "GOV-01.1\nGOV-01.2",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-GOV-04": {
+    "area_of_focus": "Cybersecurity & Data Protection Management",
+    "documentation_artifact": "Charter - Data Privacy Steering Committee",
+    "artifact_description": "Documented evidence of an executive steering committee, or advisory board, that is formed to perform oversight of privacy management decisions and is comprised of key cybersecurity, technology, risk, privacy and business executives.",
+    "scf_control_mappings": "GOV-01.2\nCPL-02",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-GOV-05": {
+    "area_of_focus": "Cybersecurity & Data Protection Management",
+    "documentation_artifact": "Charter - Audit Committee",
+    "artifact_description": "Documented evidence of an executive steering committee, or advisory board, that is formed to perform oversight of internal and external audit management decisions and is comprised of key cybersecurity, technology, risk, privacy and business executives.",
+    "scf_control_mappings": "GOV-01.2\nCPL-02",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-GOV-06": {
+    "area_of_focus": "Cybersecurity & Data Protection Management",
+    "documentation_artifact": "Charter - Risk Committee",
+    "artifact_description": "Documented evidence of an executive steering committee, or advisory board, that is formed to perform oversight of risk management decisions and is comprised of key cybersecurity, technology, risk, privacy and business executives.",
+    "scf_control_mappings": "GOV-01.2\nCPL-02",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-GOV-07": {
+    "area_of_focus": "Cybersecurity & Data Protection Management",
+    "documentation_artifact": "Charter - Data Management Board (DMB)",
+    "artifact_description": "Documented evidence of the organization's Data Management Board (DMB) charter and mission.",
+    "scf_control_mappings": "GOV-01.2",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-GOV-08": {
+    "area_of_focus": "Cybersecurity & Data Protection Management",
+    "documentation_artifact": "Cybersecurity & Data Protection Policies",
+    "artifact_description": "Documented evidence of an appropriately-scoped cybersecurity & data protection policies. Policies are high-level statements of management intent from an organization's executive leadership that are designed to influence decisions and guide the organization to achieve the desired outcomes. Policies are enforced by standards and further implemented by procedures to establish actionable and accountable requirements.",
+    "scf_control_mappings": "GOV-02\nPRI-01",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-GOV-09": {
+    "area_of_focus": "Cybersecurity & Data Protection Management",
+    "documentation_artifact": "Cybersecurity & Data Protection Standards",
+    "artifact_description": "Documented evidence of an appropriately-scoped cybersecurity & data protection standards. Standards are mandatory requirements regarding processes, actions and configurations. Standards are intended to be granular and prescriptive to ensure systems, applications and processes are designed and operated to include appropriate cybersecurity & data protection protections",
+    "scf_control_mappings": "GOV-02",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-GOV-10": {
+    "area_of_focus": "Cybersecurity & Data Protection Management",
+    "documentation_artifact": "Cybersecurity & Data Protection Controls",
+    "artifact_description": "Documented evidence of an appropriately-scoped cybersecurity & data protection controls. Controls are technical, administrative or physical safeguards. Controls are the nexus used to manage risks through preventing, detecting or lessening the ability of a particular threat from negatively impacting business processes. Controls directly map to standards, since control testing is designed to measure specific aspects of how standards are actually implemented.",
+    "scf_control_mappings": "GOV-09\nCPL-01\nCPL-01.2\nBCD-13\nBCD-13.1\nSEA-01.1\nSEA-01.2",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-GOV-11": {
+    "area_of_focus": "Cybersecurity & Data Protection Management",
+    "documentation_artifact": "Cybersecurity & Data Protection Procedures",
+    "artifact_description": "Documented evidence of an appropriate appropriately-scoped cybersecurity & data protection procedures. Procedures are a documented set of steps necessary to perform a specific task or process in conformance with an applicable standard. Procedures help address the question of how the organization actually operationalizes a policy, standard or control. The result of a procedure is intended to satisfy a specific control. Procedures are also commonly referred to as \u201ccontrol activities.\u201d",
+    "scf_control_mappings": "GOV-02\nOPS-01.1\nBCD-13\nBCD-13.1",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-GOV-12": {
+    "area_of_focus": "Cybersecurity & Data Protection Management",
+    "documentation_artifact": "Cybersecurity & Data Protection Policies & Standards Reviews",
+    "artifact_description": "Documented evidence of a periodic review process for the organization's cybersecurity & data protection policies and standards to identify necessary updates.",
+    "scf_control_mappings": "GOV-03\nSEA-01.1\nSEA-01.2",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-GOV-13": {
+    "area_of_focus": "Cybersecurity & Data Protection Management",
+    "documentation_artifact": "Measures of Performance (Metrics)",
+    "artifact_description": "Documented evidence of formal measure of performance that are used to track the health of the cybersecurity & data protection program (e.g., metrics, KPIs, KRIs).",
+    "scf_control_mappings": "GOV-01.2\nGOV-05\nGOV-05.2\nCPL-02",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-GOV-14": {
+    "area_of_focus": "Cybersecurity & Data Protection Management",
+    "documentation_artifact": "Materiality Threshold Definition",
+    "artifact_description": "Documented evidence of criteria to define the organization's materiality threshold.",
+    "scf_control_mappings": "GOV-16",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-GOV-15": {
+    "area_of_focus": "Cybersecurity & Data Protection Management",
+    "documentation_artifact": "Material Risks",
+    "artifact_description": "Documented evidence of specific risks that are categorized as material risks.",
+    "scf_control_mappings": "GOV-16.1",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-GOV-16": {
+    "area_of_focus": "Cybersecurity & Data Protection Management",
+    "documentation_artifact": "Material Threats",
+    "artifact_description": "Documented evidence of specific threats that are categorized as material threats.",
+    "scf_control_mappings": "GOV-16.2",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-GOV-17": {
+    "area_of_focus": "Cybersecurity & Data Protection Management",
+    "documentation_artifact": "Cybersecurity & Data Privacy Status Reports",
+    "artifact_description": "Documented evidence of status reports of the organization's cybersecurity and/or data privacy program that were submitted to applicable statutory and/or regulatory authorities.",
+    "scf_control_mappings": "GOV-17",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-GOV-18": {
+    "area_of_focus": "Cybersecurity & Data Protection Management",
+    "documentation_artifact": "Exception Management",
+    "artifact_description": "Documented evidence of authorized exceptions to standards (e.g., configurations, practices, etc.)",
+    "scf_control_mappings": "CRY-01.1\nGOV-02.1",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-AAT-01": {
+    "area_of_focus": "Artificial Intelligence (AI) & Autonomous Technologies Governance",
+    "documentation_artifact": "Artificial Intelligence and Autonomous Technologies (AAT) Governance Program",
+    "artifact_description": "Documented evidence of a governance program for Artificial Intelligence and Autonomous Technologies (AAT).",
+    "scf_control_mappings": "AAT-01",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-AAT-02": {
+    "area_of_focus": "Artificial Intelligence (AI) & Autonomous Technologies Governance",
+    "documentation_artifact": "Compliance Obligations for Artificial Intelligence and Autonomous Technologies (AAT).",
+    "artifact_description": "Documented evidence of applicable statutory, regulatory and contractual cybersecurity & data privacy obligations for Artificial Intelligence and Autonomous Technologies (AAT).",
+    "scf_control_mappings": "AAT-01.1",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-AAT-03": {
+    "area_of_focus": "Artificial Intelligence (AI) & Autonomous Technologies Governance",
+    "documentation_artifact": "Secure Development Practices for Artificial Intelligence and Autonomous Technologies (AAT).",
+    "artifact_description": "Documented evidence of industry-recognized secure practices to develop and maintain trustworthy Artificial Intelligence and Autonomous Technologies (AAT).",
+    "scf_control_mappings": "AAT-01.2",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-AAT-04": {
+    "area_of_focus": "Artificial Intelligence (AI) & Autonomous Technologies Governance",
+    "documentation_artifact": "Business Case for Artificial Intelligence and Autonomous Technologies (AAT)",
+    "artifact_description": "Documented evidence of a business case for Artificial Intelligence and Autonomous Technologies (AAT).",
+    "scf_control_mappings": "AAT-04",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-AAT-05": {
+    "area_of_focus": "Artificial Intelligence (AI) & Autonomous Technologies Governance",
+    "documentation_artifact": "Risk Management Decision Makers for Artificial Intelligence and Autonomous Technologies (AAT)",
+    "artifact_description": "Documented evidence of diversity of demographics, disciplines, experience, expertise and backgrounds for mapping, measuring and managing Artificial Intelligence (AI) and Autonomous Technologies (AAT)-related risks.",
+    "scf_control_mappings": "AAT-07",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-AAT-06": {
+    "area_of_focus": "Artificial Intelligence (AI) & Autonomous Technologies Governance",
+    "documentation_artifact": "Impact Assessments for Artificial Intelligence and Autonomous Technologies (AAT)",
+    "artifact_description": "Documented evidence of impact assessments of proposed Artificial Intelligence (AI) and Autonomous Technologies (AAT) on individuals, groups, communities, organizations and society.",
+    "scf_control_mappings": "AAT-07.1\nAAT-07.2",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-AAT-07": {
+    "area_of_focus": "Artificial Intelligence (AI) & Autonomous Technologies Governance",
+    "documentation_artifact": "Artificial Intelligence Test, Evaluation, Validation & Verification (AI TEVV) Practices",
+    "artifact_description": "Documented evidence of Artificial Intelligence Test, Evaluation, Validation & Verification (AI TEVV) practices.",
+    "scf_control_mappings": "AAT-10",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-AAT-08": {
+    "area_of_focus": "Artificial Intelligence (AI) & Autonomous Technologies Governance",
+    "documentation_artifact": "Robust Stakeholder Involvement for Artificial Intelligence and Autonomous Technologies (AAT)",
+    "artifact_description": "Documented evidence of robust stakeholder involvement on Artificial Intelligence (AI) and Autonomous Technologies (AAT) initiatives.",
+    "scf_control_mappings": "AAT-11",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-AAT-09": {
+    "area_of_focus": "Artificial Intelligence (AI) & Autonomous Technologies Governance",
+    "documentation_artifact": "Intellectual Property (IP) Infringement Assessment of Artificial Intelligence and Autonomous Technologies (AAT)",
+    "artifact_description": "Documented evidence of a legal opinion on the potential for Intellectual Property (IP) infringement by the organization's Artificial Intelligence (AI) and Autonomous Technologies (AAT) initiatives.",
+    "scf_control_mappings": "AAT-12",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-AAT-10": {
+    "area_of_focus": "Artificial Intelligence (AI) & Autonomous Technologies Governance",
+    "documentation_artifact": "Source Data Identification for Artificial Intelligence and Autonomous Technologies (AAT)",
+    "artifact_description": "Documented evidence of data sources utilized in the training and/or operation of Artificial Intelligence and Autonomous Technologies (AAT).",
+    "scf_control_mappings": "AAT-12.1",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-AST-01": {
+    "area_of_focus": "Asset Management",
+    "documentation_artifact": "IT Asset Management (ITAM)",
+    "artifact_description": "Documented evidence of an IT Asset Management (ITAM) program that addresses the due diligence and due care activities associated with maintaining both secure and compliant systems, applications and services.",
+    "scf_control_mappings": "AST-01\nAST-03\nAST-03.1\nAST-10\nCFG-05\nEND-01\nIAC-01\nIAC-02.2\nMON-03\nMON-16.4",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-AST-02": {
+    "area_of_focus": "Asset Management",
+    "documentation_artifact": "Asset Scoping Guidance",
+    "artifact_description": "Documented evidence of an asset scoping guidance. This is program-level documentation in the form of a runbook, playbook or a similar format provides guidance on defining in-scope systems, applications, services, processes and third-parties.",
+    "scf_control_mappings": "AST-04.1\nAST-04.2\nAST-04.3\nCPL-01.2\nIAO-01.1",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-AST-03": {
+    "area_of_focus": "Asset Management",
+    "documentation_artifact": "Asset Disposal Evidence",
+    "artifact_description": "Documented evidence of asset disposal/destruction (e.g., asset tracking by serial # for shredding, degaussing, etc.).",
+    "scf_control_mappings": "AST-09\nDCH-08\nDCH-09\nDCH-09.1",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-AST-04": {
+    "area_of_focus": "Asset Management",
+    "documentation_artifact": "Asset Inventories - Hardware",
+    "artifact_description": "Documented evidence of an inventory of the organization's technology hardware assets. ",
+    "scf_control_mappings": "AST-02",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-AST-05": {
+    "area_of_focus": "Asset Management",
+    "documentation_artifact": "Asset Inventories - Software",
+    "artifact_description": "Documented evidence of an inventory of the organization's software assets. ",
+    "scf_control_mappings": "AST-02",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-AST-06": {
+    "area_of_focus": "Asset Management",
+    "documentation_artifact": "Asset Inventories - Cloud Service Provider (CSP)",
+    "artifact_description": "Documented evidence of an inventory of the organization's cloud-based services (e.g., SaaS, IaaS, PaaS, etc.). ",
+    "scf_control_mappings": "CLD-01\nCLD-09\nTPM-01.1",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-AST-07": {
+    "area_of_focus": "Asset Management",
+    "documentation_artifact": "Cyber-Physical Systems (CPS)",
+    "artifact_description": "Documented evidence of an inventory of the organization's physical assets that process functions based on software and networks.",
+    "scf_control_mappings": "AST-02\nEMB-01",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-AST-08": {
+    "area_of_focus": "Asset Management",
+    "documentation_artifact": "Asset Inventories - Sensitive / Regulated Data",
+    "artifact_description": "Documented evidence of an inventory of the organization's sensitive/regulated data (including systems where sensitive/regulated data is stored, processed and/or transmitted) that contains sufficient information to determine the potential impact in the event of a data loss incident.",
+    "scf_control_mappings": "CLD-10\nDCH-01.3\nDCH-06.2\nBCD-11.2\nPRI-05.5",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-AST-09": {
+    "area_of_focus": "Asset Management",
+    "documentation_artifact": "Computer Lifecycle Plan (CLP)",
+    "artifact_description": "Documented evidence of a Computer Lifecycle Plan (CLP) that describes how the life of technology assets is managed.",
+    "scf_control_mappings": "SEA-07\nSEA-07.1\nTDA-17",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-AST-10": {
+    "area_of_focus": "Asset Management",
+    "documentation_artifact": "Prohibited Equipment List (PEM)",
+    "artifact_description": "Documented evidence of equipment identified by Federal Acquisition Regulation (FAR) section 889 prohibitions for certain telecommunications equipment.",
+    "scf_control_mappings": "AST-17",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-AST-11": {
+    "area_of_focus": "Asset Management",
+    "documentation_artifact": "Data Retention Program",
+    "artifact_description": "Documented evidence of a formal data retention program that governs the retention and destruction of data types.",
+    "scf_control_mappings": "DCH-18\nMON-10\nPRI-05",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-AST-12": {
+    "area_of_focus": "Asset Management",
+    "documentation_artifact": "Secure Baseline Configurations Reviews",
+    "artifact_description": "Documented evidence of a review process to ensure Secure Baseline Configurations (SBC) are current and applicable.",
+    "scf_control_mappings": "CFG-02\nCFG-02.1\nCFG-02.5\nCFG-03\nNET-04\nNET-04.1\nNET-04.6",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-AST-13": {
+    "area_of_focus": "Asset Management",
+    "documentation_artifact": "Secure Baseline Configurations - Cloud-Based Services",
+    "artifact_description": "Documented evidence of secure baseline configurations for all deployed types of cloud-based services or applications.",
+    "scf_control_mappings": "CFG-02\nCFG-03\nCFG-02.5",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-AST-14": {
+    "area_of_focus": "Asset Management",
+    "documentation_artifact": "Secure Baseline Configurations - Databases",
+    "artifact_description": "Documented evidence of secure baseline configurations for all deployed types of databases.",
+    "scf_control_mappings": "CFG-02\nCFG-03\nCFG-02.5",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-AST-15": {
+    "area_of_focus": "Asset Management",
+    "documentation_artifact": "Secure Baseline Configurations - Embedded Technologies",
+    "artifact_description": "Documented evidence of secure baseline configurations for all deployed types of embedded technologies.",
+    "scf_control_mappings": "CFG-02\nCFG-03\nCFG-02.5",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-AST-16": {
+    "area_of_focus": "Asset Management",
+    "documentation_artifact": "Secure Baseline Configurations - Major Applications",
+    "artifact_description": "Documented evidence of secure baseline configurations for all deployed types of major applications.",
+    "scf_control_mappings": "CFG-02\nCFG-03\nCFG-02.5",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-AST-17": {
+    "area_of_focus": "Asset Management",
+    "documentation_artifact": "Secure Baseline Configurations - Minor Applications",
+    "artifact_description": "Documented evidence of secure baseline configurations for all deployed types of minor applications.",
+    "scf_control_mappings": "CFG-02\nCFG-03\nCFG-02.5",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-AST-18": {
+    "area_of_focus": "Asset Management",
+    "documentation_artifact": "Secure Baseline Configurations - Mobile Devices",
+    "artifact_description": "Documented evidence of secure baseline configurations for all deployed types of mobile devices.",
+    "scf_control_mappings": "CFG-02\nCFG-03\nCFG-02.5",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-AST-19": {
+    "area_of_focus": "Asset Management",
+    "documentation_artifact": "Secure Baseline Configurations - Network Devices",
+    "artifact_description": "Documented evidence of secure baseline configurations for all deployed types of network devices.",
+    "scf_control_mappings": "CFG-02\nCFG-02.5\nCFG-03\nNET-04\nNET-04.1",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-AST-20": {
+    "area_of_focus": "Asset Management",
+    "documentation_artifact": "Secure Baseline Configurations - Server Class Systems",
+    "artifact_description": "Documented evidence of secure baseline configurations for all deployed types of server-class operating systems.",
+    "scf_control_mappings": "CFG-02\nCFG-02.5\nCFG-03\nCFG-03.2",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-AST-21": {
+    "area_of_focus": "Asset Management",
+    "documentation_artifact": "Secure Baseline Configurations - Workstation Class Systems",
+    "artifact_description": "Documented evidence of secure baseline configurations for all deployed types of workstation-class operating systems.",
+    "scf_control_mappings": "CFG-02\nCFG-02.5\nCFG-03\nCFG-03.2\nCFG-05",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-AST-22": {
+    "area_of_focus": "Asset Management",
+    "documentation_artifact": "Provenance",
+    "artifact_description": "Documented evidence of that tracks the origin, development, ownership, location and changes to systems, system components and associated data.",
+    "scf_control_mappings": "AST-03.2",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-AST-23": {
+    "area_of_focus": "Asset Management",
+    "documentation_artifact": "Geolocation Inventory",
+    "artifact_description": "Documented evidence of designated internal and third-party facilities where organizational data is stored, transmitted and/or processed.",
+    "scf_control_mappings": "BCD-02.4\nCLD-09\nDCH-19\nDCH-24",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-AST-24": {
+    "area_of_focus": "Asset Management",
+    "documentation_artifact": "Asset Categorization",
+    "artifact_description": "Documented evidence of a methodology to categorize technology assets (e.g., criticality and data classification considerations)",
+    "scf_control_mappings": "AST-31\nAST-31.1",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-AST-25": {
+    "area_of_focus": "Asset Management",
+    "documentation_artifact": "Logical Tamper Detection Tool",
+    "artifact_description": "Documented evidence of software that is implemented and configured to detect logical tampering (e.g., configurations).",
+    "scf_control_mappings": "AST-15",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-AST-26": {
+    "area_of_focus": "Asset Management",
+    "documentation_artifact": "Roots of Trust Evidence",
+    "artifact_description": "Documented evidence of product supplier data that can be used as a \u201croots of trust\u201d basis for integrity verification.",
+    "scf_control_mappings": "AST-18",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-AST-27": {
+    "area_of_focus": "Asset Management",
+    "documentation_artifact": "Endpoint Security Tools",
+    "artifact_description": "Documented evidence of endpoint security tools employed by the organization to ensure secure and compliant systems, applications and processes (e.g., antimalware, FIM, etc.).",
+    "scf_control_mappings": "END-01\nEND-04\nEND-06",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-BCM-01": {
+    "area_of_focus": "Business Continuity",
+    "documentation_artifact": "Continuity of Operations Plan (COOP)",
+    "artifact_description": "Documented evidence of a Continuity of Operations Plan (COOP). This is program-level documentation in the form of a runbook, playbook or a similar format provides guidance on organizational practices that support existing policies and standards. This involves internal and external stakeholders for incident response, disaster recovery and business continuity support requirements.",
+    "scf_control_mappings": "BCD-01\nBCD-01.1\nBCD-01.2\nBCD-01.6\nBCD-02.1\nSEA-01.2",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-BCM-02": {
+    "area_of_focus": "Business Continuity",
+    "documentation_artifact": "Recovery Time Objectives (RTOs)",
+    "artifact_description": "Documented evidence of Recovery Time Objectives (RTOs) that guide Continuity of Operations Plan (COOP)-related operations.",
+    "scf_control_mappings": "BCD-01.4",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-BCM-03": {
+    "area_of_focus": "Business Continuity",
+    "documentation_artifact": "Recovery Point Objectives (RPOs)",
+    "artifact_description": "Documented evidence of Recovery Point Objectives (RPOs) that guide Continuity of Operations Plan (COOP)-related operations.",
+    "scf_control_mappings": "BCD-01.4",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-BCM-04": {
+    "area_of_focus": "Business Continuity",
+    "documentation_artifact": "COOP Root Cause Analysis (RCA)",
+    "artifact_description": "Documented evidence of a Root Cause Analysis (RCA) from any Continuity of Operations Plan (COOP)-related training, testing or incident.",
+    "scf_control_mappings": "BCD-05",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-BCM-05": {
+    "area_of_focus": "Business Continuity",
+    "documentation_artifact": "COOP Updates",
+    "artifact_description": "Documented evidence of a periodic review process for the organization's Continuity of Operations Plan (COOP) to identify necessary updates.",
+    "scf_control_mappings": "BCD-06",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-BCM-06": {
+    "area_of_focus": "Business Continuity",
+    "documentation_artifact": "COOP Testing",
+    "artifact_description": "Documented evidence of a Continuity of Operations Plan (COOP)-related testing activity.",
+    "scf_control_mappings": "BCD-03.1\nBCD-04",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-BCM-07": {
+    "area_of_focus": "Business Continuity",
+    "documentation_artifact": "COOP Training",
+    "artifact_description": "Documented evidence of a Continuity of Operations Plan (COOP)-related training activity.",
+    "scf_control_mappings": "BCD-03\nBCD-04",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-BCM-08": {
+    "area_of_focus": "Business Continuity",
+    "documentation_artifact": "COOP Criticality Analysis",
+    "artifact_description": "Documented evidence of a Continuity of Operations Plan (COOP)-related criticality analysis.",
+    "scf_control_mappings": "BCD-02\nTDA-06.1",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-BCM-09": {
+    "area_of_focus": "Business Continuity",
+    "documentation_artifact": "COOP Dependency Analysis",
+    "artifact_description": "Documented evidence of a Continuity of Operations Plan (COOP)-related dependency analysis for applications, systems, services, facilities, stakeholders and third-parties.",
+    "scf_control_mappings": "AST-01.1\nRSK-02\nRSK-02.1",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-BCM-10": {
+    "area_of_focus": "Business Continuity",
+    "documentation_artifact": "Backups",
+    "artifact_description": "Documented evidence of a Continuity of Operations Plan (COOP)-related data backup scheme that demonstrates the methods of data backup (including protection measures) for all data types to ensure business continuity requirements.",
+    "scf_control_mappings": "BCD-11\nBCD-11.1",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-BCM-11": {
+    "area_of_focus": "Business Continuity",
+    "documentation_artifact": "Backups - Local",
+    "artifact_description": "Documented evidence of event logs for the on-site / local data backup solution.",
+    "scf_control_mappings": "BCD-11\nBCD-11.2",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-BCM-12": {
+    "area_of_focus": "Business Continuity",
+    "documentation_artifact": "Backups - Remote",
+    "artifact_description": "Documented evidence of event logs for the off-site / remote data backup solution.",
+    "scf_control_mappings": "BCD-11\nBCD-11.2\nBCD-11.6",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-BCM-13": {
+    "area_of_focus": "Business Continuity",
+    "documentation_artifact": "Backups - Recovery",
+    "artifact_description": "Documented evidence of a Continuity of Operations Plan (COOP)-related criticality analysis for applications, systems, services, facilities, stakeholders and third-parties.",
+    "scf_control_mappings": "BCD-11\nBCD-11.1",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-BCM-14": {
+    "area_of_focus": "Business Continuity",
+    "documentation_artifact": "Recovery Operations Criteria",
+    "artifact_description": "Documented evidence of specific criteria to activate Business Continuity / Disaster Recovery (BC/DR) plans.",
+    "scf_control_mappings": "BCD-01.5",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-BCM-15": {
+    "area_of_focus": "Business Continuity",
+    "documentation_artifact": "Restoration Events",
+    "artifact_description": "Documented evidence of system, application and/or data recovery events. This can include random testing of data backups to ensure recovery methods are viable.",
+    "scf_control_mappings": "BCD-11.5\nBCD-12",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-CAP-01": {
+    "area_of_focus": "Capacity Management",
+    "documentation_artifact": "Capacity Planning",
+    "artifact_description": "Documented evidence of proactive capacity planning to meet expected and anticipated future technology-related capacity and/or performance requirements.",
+    "scf_control_mappings": "CAP-01\nCAP-03",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-CAP-02": {
+    "area_of_focus": "Capacity Management",
+    "documentation_artifact": "Resource Prioritization",
+    "artifact_description": "Documented evidence of resource prioritization to maintain business performance requirements for critical systems, applications and/or services.",
+    "scf_control_mappings": "CAP-02",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-CAP-03": {
+    "area_of_focus": "Capacity Management",
+    "documentation_artifact": "Technology Performance Monitoring",
+    "artifact_description": "Documented evidence of performance monitoring for technology-related capacity and/or performance criteria.",
+    "scf_control_mappings": "CAP-04",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-CAP-04": {
+    "area_of_focus": "Capacity Management",
+    "documentation_artifact": "Dynamic Expansion Capabilities",
+    "artifact_description": "Documented evidence of dynamic expansion capabilities (e.g., elastic expansion) to meet capacity and/or performance requirements for critical systems, applications and/or services.",
+    "scf_control_mappings": "CAP-05",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-CHG-01": {
+    "area_of_focus": "Change Management",
+    "documentation_artifact": "Business Impact Analysis (BIA)",
+    "artifact_description": "Documented evidence of a Business Impact Analysis (BIA) for proposed changes.",
+    "scf_control_mappings": "RSK-08\nTDA-06.1",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-CHG-02": {
+    "area_of_focus": "Change Management",
+    "documentation_artifact": "Charter - Change Control Board (CCB)",
+    "artifact_description": "Documented evidence of the organization's Change Control Board (CCB) charter and mission to govern the organization's change control processes.",
+    "scf_control_mappings": "CHG-01\nCHG-02\nCHG-02.1",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-CHG-03": {
+    "area_of_focus": "Change Management",
+    "documentation_artifact": "Change Control Board (CCB) Minutes",
+    "artifact_description": "Documented evidence of Change Control Board (CCB) meeting minutes",
+    "scf_control_mappings": "CHG-02.2",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-CHG-04": {
+    "area_of_focus": "Change Management",
+    "documentation_artifact": "Evidence of Cybersecurity / Data Privacy Reviews",
+    "artifact_description": "Documented evidence of Change Control Board (CCB) meeting-related cybersecurity and/or data privacy reviews for proposed change(s).",
+    "scf_control_mappings": "CHG-02.3\nCHG-03",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-CPL-01": {
+    "area_of_focus": "Compliance",
+    "documentation_artifact": "Statutory, Regulatory & Contractual Obligations",
+    "artifact_description": "Documented evidence of applicable statutory, regulatory and/or contractual obligations for cybersecurity & data privacy controls.",
+    "scf_control_mappings": "CPL-01\nMON-03",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-CPL-02": {
+    "area_of_focus": "Compliance",
+    "documentation_artifact": "Defined Compliance Scope (DCS)",
+    "artifact_description": "Documented evidence of a formal scoping document that identifies applicable statutory, regulatory and/or contractual obligations for the organization. Defines the affected Lines of Business (LOB), internal / external stakeholders and facilities for the specific scope of compliance obligations.",
+    "scf_control_mappings": "AST-04.1\nAST-04.2\nAST-04.3\nCPL-01.2",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-CPL-03": {
+    "area_of_focus": "Compliance",
+    "documentation_artifact": "Controls Responsibility Matrix (CRM)",
+    "artifact_description": "Documented evidence of a Controls Responsibility Matrix (CRM), or similar documentation, that identifies the stakeholder involved in executing assigned controls (e.g., Responsible, Accountable, Supportive, Consulted & Informed (RASCI) matrix).",
+    "scf_control_mappings": "AST-01.2\nAST-03\nCLD-06.1\nTPM-05.4",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-CPL-04": {
+    "area_of_focus": "Compliance",
+    "documentation_artifact": "Internal Audit (IA)",
+    "artifact_description": "Documented evidence of an Internal Audit (IA) capability.",
+    "scf_control_mappings": "CPL-02.1",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-CPL-05": {
+    "area_of_focus": "Compliance",
+    "documentation_artifact": "Internal Audit (IA) Findings",
+    "artifact_description": "Documented evidence of a centrally-managed and prioritized repository Internal Audit (IA) findings.",
+    "scf_control_mappings": "CPL-01.1\nCPL-03\nGOV-01.2",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-CPL-06": {
+    "area_of_focus": "Compliance",
+    "documentation_artifact": "Manufacturer Disclosure Statement for Medical Device Security (MDS2)",
+    "artifact_description": "Documented Manufacturer Disclosure Statement for Medical Device Security (MDS2) that communicates information about medical device cybersecurity & data privacy characteristics to current device owners and potential buyers. [note MDS2 is specific to medical device manufacturers]",
+    "scf_control_mappings": "TDA-01.1\nTDA-02.1\nTDA-02.5\nTDA-04\nTDA-04.1\nTPM-04\nTPM-04.2",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-CPL-07": {
+    "area_of_focus": "Compliance",
+    "documentation_artifact": "Control Assessments",
+    "artifact_description": "Documented evidence of internal or third-party control assessments to provide governance oversight of cybersecurity & data privacy controls.",
+    "scf_control_mappings": "CPL-02\nCPL-02.1\nCPL-03\nCPL-03.1",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-CPL-08": {
+    "area_of_focus": "Compliance",
+    "documentation_artifact": "Functional Review of Cybersecurity Controls",
+    "artifact_description": "Documented evidence of control testing to ensure cybersecurity controls function as expected.",
+    "scf_control_mappings": "CPL-03.2",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-CPL-09": {
+    "area_of_focus": "Compliance",
+    "documentation_artifact": "Non-Compliance Oversight Reporting",
+    "artifact_description": "Documented evidence of governance oversight reporting of non-compliance to the organization's executive leadership.",
+    "scf_control_mappings": "CPL-02\nGOV-01.2",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-CRY-01": {
+    "area_of_focus": "Cryptographic Protections",
+    "documentation_artifact": "Cryptographic Protections",
+    "artifact_description": "Documented evidence of organization-approved cryptographic solutions and modules for both data at rest and in transit.",
+    "scf_control_mappings": "CRY-01\nCRY-03\nCRY-04\nCRY-05\nCRY-09\nCRY-09.1\nCRY-09.2\nDCH-01\nDCH-01.2",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-CRY-02": {
+    "area_of_focus": "Cryptographic Protections",
+    "documentation_artifact": "Cryptographic Key Management",
+    "artifact_description": "Documented evidence of cryptographic key management practices.",
+    "scf_control_mappings": "CRY-09",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-CRY-03": {
+    "area_of_focus": "Cryptographic Protections",
+    "documentation_artifact": "Certificate Monitoring",
+    "artifact_description": "Documented evidence of certificate monitoring activities.",
+    "scf_control_mappings": "CRY-12",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-DCH-01": {
+    "area_of_focus": "Data Protection",
+    "documentation_artifact": "Data Classification Scheme",
+    "artifact_description": "Documented evidence of an organization-specific data classification scheme.",
+    "scf_control_mappings": "AST-04.1\nDCH-02",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-DCH-02": {
+    "area_of_focus": "Data Protection",
+    "documentation_artifact": "Data Handling Practices",
+    "artifact_description": "Documented evidence of an organization-specific data handling practices (e.g., guidance specific the data classification scheme).",
+    "scf_control_mappings": "AST-04.1\nDCH-01.1\nDCH-01.2\nDCH-01.4\nDCH-02\nDCH-06",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-DCH-03": {
+    "area_of_focus": "Data Protection",
+    "documentation_artifact": "Network Diagram - Global System View (GSV)",
+    "artifact_description": "Documented evidence of a high-level network diagram that provides a conceptual, logical depiction of the network(s) to describe the interconnections of the systems/applications/services, including internal and external interfaces.",
+    "scf_control_mappings": "AST-04\nNET-02",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-DCH-04": {
+    "area_of_focus": "Data Protection",
+    "documentation_artifact": "Network Diagram - Low Level",
+    "artifact_description": "Documented evidence of a low-level network diagram that provides a detailed, logical depiction of assets on the network(s).",
+    "scf_control_mappings": "AST-04\nNET-02",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-DCH-05": {
+    "area_of_focus": "Data Protection",
+    "documentation_artifact": "Data Flow Diagram (DFD)",
+    "artifact_description": "Documented evidence of a Data Flow Diagram (DFD) that accurately identifies where sensitive/regulated data is stored, transmitted and/or processed.",
+    "scf_control_mappings": "AST-02.8\nAST-04\nNET-02",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-DCH-06": {
+    "area_of_focus": "Data Protection",
+    "documentation_artifact": "Third-Party Inventories",
+    "artifact_description": "Documented evidence of an inventory of Third-Party Service Providers (TSP), contractors, vendors, etc. that directly or indirectly impact the organization's data, systems, applications, services and/or processes.",
+    "scf_control_mappings": "TPM-01.1",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-DCH-07": {
+    "area_of_focus": "Data Protection",
+    "documentation_artifact": "Media Sanitization Documentation",
+    "artifact_description": "Documented evidence of media sanitization actions.",
+    "scf_control_mappings": "DCH-09\nDCH-09.1",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-DCH-08": {
+    "area_of_focus": "Data Protection",
+    "documentation_artifact": "Authorization Documentation",
+    "artifact_description": "Documented evidence of that identifies authorized users and processes acting on behalf of authorized users.",
+    "scf_control_mappings": "CFG-08\nDCH-01.4",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-DCH-09": {
+    "area_of_focus": "Data Protection",
+    "documentation_artifact": "Assigned Responsibilities",
+    "artifact_description": "Documented evidence of data stewardship being assigned and communicated to individuals entrusted with sensitive and/or regulated data.",
+    "scf_control_mappings": "CRY-01\nDCH-01.1\nDCH-14",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-DCH-10": {
+    "area_of_focus": "Data Protection",
+    "documentation_artifact": "Structured & Unstructured Data Reviews",
+    "artifact_description": "Documented evidence of a capability to review and/or scan data repositories (structured or unstructured) for instances of sensitive and/or regulated data.",
+    "scf_control_mappings": "DCH-06.3",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-SAT-01": {
+    "area_of_focus": "Education",
+    "documentation_artifact": "Continuing Professional Education (CPE)",
+    "artifact_description": "Documented evidence of Continuing Professional Education (CPE) requirements for cybersecurity & data privacy personnel.",
+    "scf_control_mappings": "SAT-03.7",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-SAT-02": {
+    "area_of_focus": "Education",
+    "documentation_artifact": "Initial User Training",
+    "artifact_description": "Documented evidence of initial user training for cybersecurity and/ord ata privacy topics.",
+    "scf_control_mappings": "SAT-01\nSAT-02\nSAT-02.2\nSAT-04\nHRS-05.7",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-SAT-03": {
+    "area_of_focus": "Education",
+    "documentation_artifact": "Practical Exercises",
+    "artifact_description": "Documented evidence of practical user training exercises for cybersecurity and/or data privacy topics (e.g., phishing exercise).",
+    "scf_control_mappings": "SAT-02.1\nSAT-03.1\nSAT-04",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-SAT-04": {
+    "area_of_focus": "Education",
+    "documentation_artifact": "Recurring User Training",
+    "artifact_description": "Documented evidence of recurring (e.g., annual) user training for cybersecurity and/or data privacy topics.",
+    "scf_control_mappings": "SAT-01\nSAT-03.4\nSAT-03.6\nSAT-03.7\nSAT-04\nHRS-05.7\nTHR-05",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-SAT-05": {
+    "area_of_focus": "Education",
+    "documentation_artifact": "Role-Based Training",
+    "artifact_description": "Documented evidence of specialized user training for privileged users, executives, individuals who handle sensitive/regulated data, etc.",
+    "scf_control_mappings": "DCH-14\nSAT-01\nSAT-03\nSAT-03.4\nSAT-03.5\nSAT-04\nTHR-05",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-MON-01": {
+    "area_of_focus": "Event Log Monitoring",
+    "documentation_artifact": "Event Log Revie w & Analysis",
+    "artifact_description": "Documented evidence of security event log review and analysis.",
+    "scf_control_mappings": "MON-01\nMON-01.1\nMON-01.2\nMON-01.3\nMON-01.4\nMON-01.8\nMON-02\nMON-02.2",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-MON-02": {
+    "area_of_focus": "Event Log Monitoring",
+    "documentation_artifact": "Malware Activity",
+    "artifact_description": "Documented evidence of malware activity being logged and included as part of the centralized event log collection and review/analysis process.",
+    "scf_control_mappings": "MON-01.8\nMON-02.2\nEND-04.3",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-MON-03": {
+    "area_of_focus": "Event Log Monitoring",
+    "documentation_artifact": "Privileged User Oversight",
+    "artifact_description": "Documented evidence of privileged user activity being logged and included as part of the centralized event log collection and review/analysis process.",
+    "scf_control_mappings": "MON-01.14\nMON-01.15",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-MON-04": {
+    "area_of_focus": "Event Log Monitoring",
+    "documentation_artifact": "Rogue Devices",
+    "artifact_description": "Documented evidence of rogue device identification is included as part of the centralized event log collection and review/analysis process.",
+    "scf_control_mappings": "AST-02.6",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-MON-05": {
+    "area_of_focus": "Event Log Monitoring",
+    "documentation_artifact": "Centralized Event Log Collection",
+    "artifact_description": "Documented evidence of security-relevant activities being logged and included as part of the centralized event log collection and review/analysis process.",
+    "scf_control_mappings": "MON-01.2\nMON-01.8\nMON-02\nMON-02.2\nMON-02.1",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-MON-06": {
+    "area_of_focus": "Event Log Monitoring",
+    "documentation_artifact": "Automated Event Escalation & Reporting",
+    "artifact_description": "Documented evidence of a capability for selected events to alert applicable personnel, or roles, based on the type of event. This can be demonstrated by the configuration of a Security Incident Event Manager (SIEM), or similar technology, that helps automate event log analysis and reporting.",
+    "scf_control_mappings": "MON-01\nMON-01.1\nMON-01.3\nMON-01.4\nMON-01.12",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-MON-07": {
+    "area_of_focus": "Event Log Monitoring",
+    "documentation_artifact": "Situational Awareness",
+    "artifact_description": "Documented evidence of the organization leveraging knowledge of event log generation to gain situational awareness of cross-domain activities (e.g., technology issues, security events, policy violations, service provider activities, remote workforce activities, physical security events, etc.).",
+    "scf_control_mappings": "MON-01\nMON-01.1\nMON-01.3\nMON-01.4\nMON-02.1\nMON-11.3\nMON-16\nMON-16.1\nMON-16.2\nMON-16.3",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-MON-08": {
+    "area_of_focus": "Event Log Monitoring",
+    "documentation_artifact": "Integrity Monitoring",
+    "artifact_description": "Documented evidence of integrity monitoring, where files and/or configurations on critical systems, applications and/or services are actively monitored for changes that could indicate unauthorized changes.",
+    "scf_control_mappings": "MON-01.7",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-HRS-01": {
+    "area_of_focus": "Human Resources",
+    "documentation_artifact": "Position Categorization",
+    "artifact_description": "Documented evidence of a discrete roles for cybersecurity & data privacy functions (e.g., position categorization). ",
+    "scf_control_mappings": "GOV-04\nHRS-01\nHRS-02\nHRS-03\nHRS-03.1",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-HRS-02": {
+    "area_of_focus": "Human Resources",
+    "documentation_artifact": "Assigned Roles - Application Developers",
+    "artifact_description": "List of employed or contract personnel assigned to application development roles.",
+    "scf_control_mappings": "HRS-02\nHRS-02.1\nHRS-03\nOPS-01",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-HRS-03": {
+    "area_of_focus": "Human Resources",
+    "documentation_artifact": "Assigned Roles - Cybersecurity Staff",
+    "artifact_description": "List of employed or contract personnel assigned to cybersecurity roles.",
+    "scf_control_mappings": "HRS-02\nHRS-02.1\nHRS-03\nOPS-01",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-HRS-04": {
+    "area_of_focus": "Human Resources",
+    "documentation_artifact": "Assigned Roles - Data Privacy Staff",
+    "artifact_description": "List of employed or contract personnel assigned to data privacy roles.",
+    "scf_control_mappings": "HRS-02\nHRS-02.1\nHRS-03\nOPS-01",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-HRS-05": {
+    "area_of_focus": "Human Resources",
+    "documentation_artifact": "Role Assignment - CISO",
+    "artifact_description": "Documented evidence of a formal role assignment to the Chief Information Security Officer (CISO) position.",
+    "scf_control_mappings": "GOV-04",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-HRS-06": {
+    "area_of_focus": "Human Resources",
+    "documentation_artifact": "Role Assignment - COO",
+    "artifact_description": "Documented evidence of a formal role assignment to the Chief Operations Officer (COO) position.",
+    "scf_control_mappings": "GOV-04",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-HRS-07": {
+    "area_of_focus": "Human Resources",
+    "documentation_artifact": "Role Assignment - CIO",
+    "artifact_description": "Documented evidence of a formal role assignment to the Chief Information Officer (CIO) position.",
+    "scf_control_mappings": "GOV-04",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-HRS-08": {
+    "area_of_focus": "Human Resources",
+    "documentation_artifact": "Role Assignment - CPO",
+    "artifact_description": "Documented evidence of a formal role assignment to the Chief Privacy Officer (CPO) position.",
+    "scf_control_mappings": "GOV-04\nPRI-01.1",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-HRS-09": {
+    "area_of_focus": "Human Resources",
+    "documentation_artifact": "Role Assignment - CRO",
+    "artifact_description": "Documented evidence of a formal role assignment to the Chief Risk Officer (CRO) position.",
+    "scf_control_mappings": "GOV-04",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-HRS-10": {
+    "area_of_focus": "Human Resources",
+    "documentation_artifact": "Role Assignment - DPO",
+    "artifact_description": "Documented evidence of a formal role assignment to Data Protection Officer (DPO) positions.",
+    "scf_control_mappings": "GOV-04\nPRI-01.4",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-HRS-11": {
+    "area_of_focus": "Human Resources",
+    "documentation_artifact": "Role Assignment - Sensitive / Regulated Data",
+    "artifact_description": "Documented evidence of a formal role assignment to personnel who are cleared to handle sensitive/regulated data.",
+    "scf_control_mappings": "HRS-02\nHRS-02.1\nHRS-03",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-HRS-12": {
+    "area_of_focus": "Human Resources",
+    "documentation_artifact": "Role Review",
+    "artifact_description": "Documented evidence of a formal review process to ensure personnel roles currently reflect business needs.",
+    "scf_control_mappings": "IAC-07\nIAC-07.1\nIAC-08\nIAC-17",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-HRS-13": {
+    "area_of_focus": "Human Resources",
+    "documentation_artifact": "Defined Cybersecurity & Data Privacy Responsibilities",
+    "artifact_description": "Documented evidence of a role-based cybersecurity & data privacy responsibilities to ensure personnel are both educated on the role and are responsible for the associated control execution.",
+    "scf_control_mappings": "CHG-04\nGOV-04\nHRS-03\nHRS-03.1\nOPS-01",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-HRS-14": {
+    "area_of_focus": "Human Resources",
+    "documentation_artifact": "Responsibilities Review",
+    "artifact_description": "Documented evidence of a formal review process to ensure assigned responsibilities currently reflect business needs for the assigned role.",
+    "scf_control_mappings": "IAC-17",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-HRS-15": {
+    "area_of_focus": "Human Resources",
+    "documentation_artifact": "Organization Chart",
+    "artifact_description": "Current and accurate organization chart that depicts logical staff hierarchies.",
+    "scf_control_mappings": "GOV-04\nGOV-04.1\nGOV-04.2\nHRS-01\nOPS-01",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-HRS-16": {
+    "area_of_focus": "Human Resources",
+    "documentation_artifact": "Access Agreements ",
+    "artifact_description": "Documented evidence of personnel management practices protecting sensitive/regulated data through formal access agreements.",
+    "scf_control_mappings": "HRS-03.1\nHRS-05\nHRS-06\nHRS-10",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-HRS-17": {
+    "area_of_focus": "Human Resources",
+    "documentation_artifact": "Background Checks",
+    "artifact_description": "Documented evidence of personnel screening practices, which centers around some form of formalized background check process.",
+    "scf_control_mappings": "HRS-04\nHRS-04.1",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-HRS-18": {
+    "area_of_focus": "Human Resources",
+    "documentation_artifact": "Provisioning Checklist (Onboarding)",
+    "artifact_description": "Documented evidence of personnel management practices to formally onboard personnel into their assigned roles.",
+    "scf_control_mappings": "HRS-03\nHRS-03.1\nHRS-04.2\nHRS-05.7\nHRS-10\nIAC-07\nIAC-28",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-HRS-19": {
+    "area_of_focus": "Human Resources",
+    "documentation_artifact": "Deprovisioning Checklist (Offboarding)",
+    "artifact_description": "Documented evidence of personnel management practices to formally offboard personnel from their assigned roles due to employment termination or role change.",
+    "scf_control_mappings": "HRS-06.2\nHRS-09\nHRS-09.1\nHRS-09.2\nHRS-09.3\nIAC-07\nIAC-07.1\nIAC-07.2",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-HRS-20": {
+    "area_of_focus": "Human Resources",
+    "documentation_artifact": "Non-Disclosure Agreements (NDAs)",
+    "artifact_description": "Documented evidence of the use of Non-Disclosure Agreements (NDAs) that restricts unauthorized sharing of sensitive/regulated data.",
+    "scf_control_mappings": "HRS-06.1",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-HRS-21": {
+    "area_of_focus": "Human Resources",
+    "documentation_artifact": "Position Competency Requirements",
+    "artifact_description": "Documented evidence of personnel management practices to define minimum competency requirements for cybersecurity & data privacy-related roles.",
+    "scf_control_mappings": "HRS-03.2\nHRS-04\nHRS-04.1",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-HRS-22": {
+    "area_of_focus": "Human Resources",
+    "documentation_artifact": "Rules of Behavior",
+    "artifact_description": "Documented evidence of personnel management practices to define \"acceptable use\" or \"rules of behavior\" criteria that specify acceptable and unacceptable user behaviors. ",
+    "scf_control_mappings": "HRS-02\nHRS-02.1\nHRS-03\nHRS-05\nHRS-05.1\nHRS-05.2\nHRS-05.3\nHRS-05.4\nHRS-05.5\nHRS-10",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-HRS-23": {
+    "area_of_focus": "Human Resources",
+    "documentation_artifact": "Critical Cybersecurity & Data Privacy Skills",
+    "artifact_description": "Documented evidence of personnel management practices to formally identify critical cybersecurity skills needed to support business operations.",
+    "scf_control_mappings": "HRS-03.2\nHRS-13",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-HRS-24": {
+    "area_of_focus": "Human Resources",
+    "documentation_artifact": "Critical Cybersecurity & Data Privacy Skill Gaps",
+    "artifact_description": "Documented evidence of personnel management practices to formally identify critical cybersecurity & data privacy skill gaps.",
+    "scf_control_mappings": "HRS-13\nHRS-13.1",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-HRS-25": {
+    "area_of_focus": "Human Resources",
+    "documentation_artifact": "Separation of Duties (SoD)",
+    "artifact_description": "Documented evidence of personnel management practices to implement and maintain Separation of Duties (SoD) to prevent potential inappropriate activity without collusion.",
+    "scf_control_mappings": "HRS-11\nHRS-12",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-HRS-26": {
+    "area_of_focus": "Human Resources",
+    "documentation_artifact": "Vital Cybersecurity & Data Privacy Staff",
+    "artifact_description": "Documented evidence of personnel management practices to formally identify vital cybersecurity & data privacy personnel.",
+    "scf_control_mappings": "HRS-13.2",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-HRS-27": {
+    "area_of_focus": "Human Resources",
+    "documentation_artifact": "Personnel Sanctions",
+    "artifact_description": "Documented evidence of personnel management practices to formally sanction unacceptable behavior(s).",
+    "scf_control_mappings": "HRS-01\nHRS-07\nOPS-01",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-IAM-01": {
+    "area_of_focus": "Identity & Access Management",
+    "documentation_artifact": "Access Permission Review",
+    "artifact_description": "Documented evidence of periodic access permission reviews.",
+    "scf_control_mappings": "IAC-17",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-IAM-02": {
+    "area_of_focus": "Identity & Access Management",
+    "documentation_artifact": "Defined Roles & Authorizations (RBAC)",
+    "artifact_description": "Documented evidence of defined access control-specific roles (e.g., Role Based Access Control (RBAC)) that affect both logical and physical access authorizations.",
+    "scf_control_mappings": "CFG-05\nCHG-04\nDCH-03\nEND-03\nIAC-08\nIAC-21",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-IAM-03": {
+    "area_of_focus": "Identity & Access Management",
+    "documentation_artifact": "Privileged User Inventory",
+    "artifact_description": "Documented evidence of an inventory of privileged users across systems, applications and services (internal and external).",
+    "scf_control_mappings": "IAC-16\nIAC-16.1",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-IAM-04": {
+    "area_of_focus": "Identity & Access Management",
+    "documentation_artifact": "User & Service Inventory",
+    "artifact_description": "Documented evidence of an inventory of authorized users and services.",
+    "scf_control_mappings": "IAC-01.3",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-IAM-05": {
+    "area_of_focus": "Identity & Access Management",
+    "documentation_artifact": "Identity & Access Management (IAM) Function",
+    "artifact_description": "Documented evidence of an Identity & Access Management (IAM), or similar function, that facilitates the implementation of identification and access management controls.",
+    "scf_control_mappings": "IAC-01\nIAC-02\nIAC-02.2\nIAC-03\nIAC-03.5\nIAC-04\nIAC-05\nIAC-21\nIAC-28",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-IAM-06": {
+    "area_of_focus": "Identity & Access Management",
+    "documentation_artifact": "Authenticate, Authorize and Audit (AAA) Solution",
+    "artifact_description": "Documented evidence of an Authenticate, Authorize and Audit (AAA) solution (on-premises and hosted by External Service Providers (ESP)).",
+    "scf_control_mappings": "IAC-01.2\nIAC-02\nIAC-02.2\nIAC-03\nIAC-03.5\nIAC-04\nIAC-05\nIAC-21\nIAC-28",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-IRO-01": {
+    "area_of_focus": "Incident Response",
+    "documentation_artifact": "Incident Response Program (IRP)",
+    "artifact_description": "Documented evidence of a Incident Response Plan (IRP). This is program-level documentation in the form of a runbook, playbook or a similar format provides guidance on organizational practices that support existing policies and standards.",
+    "scf_control_mappings": "IRO-01\nIRO-02.4\nIRO-02.5\nIRO-04\nIRO-06.1\nIRO-07\nIRO-08\nIRO-10\nIRO-10.2",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-IRO-02": {
+    "area_of_focus": "Incident Response",
+    "documentation_artifact": "Indicators of Compromise (IOC)",
+    "artifact_description": "Documented evidence of defined Indicators of Compromise (IOC).",
+    "scf_control_mappings": "MON-11.3\nMON-16\nMON-16.1\nMON-16.2\nMON-16.3\nIRO-03",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-IRO-03": {
+    "area_of_focus": "Incident Response",
+    "documentation_artifact": "Incident Tracking",
+    "artifact_description": "Documented evidence of a centralized repository to track cybersecurity & data privacy incidents.",
+    "scf_control_mappings": "IRO-02\nIRO-09",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-IRO-04": {
+    "area_of_focus": "Incident Response",
+    "documentation_artifact": "IRP Testing",
+    "artifact_description": "Documented evidence of an Incident Response Plan (IRP)-related testing activity.",
+    "scf_control_mappings": "IRO-06",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-IRO-05": {
+    "area_of_focus": "Incident Response",
+    "documentation_artifact": "Table Top Exercises",
+    "artifact_description": "Documented evidence of \"table top\" exercises that test incident response practices.",
+    "scf_control_mappings": "IRO-05",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-IRO-06": {
+    "area_of_focus": "Incident Response",
+    "documentation_artifact": "IRP Training",
+    "artifact_description": "Documented evidence of an Incident Response Plan (IRP)-related training activity.",
+    "scf_control_mappings": "IRO-05",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-IRO-07": {
+    "area_of_focus": "Incident Response",
+    "documentation_artifact": "IRP Updates",
+    "artifact_description": "Documented evidence of a periodic review process for the organization's Incident Response Plan (IRP) to identify necessary updates.",
+    "scf_control_mappings": "IRO-04.2",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-IRO-08": {
+    "area_of_focus": "Incident Response",
+    "documentation_artifact": "Root Cause Analysis (RCA)",
+    "artifact_description": "Documented evidence of a Root Cause Analysis (RCA) from any Incident Response Plan (IRP)-related training, testing or incident.",
+    "scf_control_mappings": "IRO-13",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-IRO-09": {
+    "area_of_focus": "Incident Response",
+    "documentation_artifact": "Formally Assigned Incident Response Roles & Responsibilities",
+    "artifact_description": "Documented evidence of the establishment of a formally-assigned, integrated team of cybersecurity, IT and business function representatives that are capable of addressing cybersecurity & data privacy incident response operations.",
+    "scf_control_mappings": "IRO-07\nIRO-16",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-IRO-10": {
+    "area_of_focus": "Incident Response",
+    "documentation_artifact": "Chain of Custody",
+    "artifact_description": "Documented evidence of an in-house, or externally contracted, capability to perform digital forensics and maintain the integrity of the chain of custody, in accordance with applicable laws, regulations and industry-recognized secure practices.",
+    "scf_control_mappings": "IRO-08",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-IRO-11": {
+    "area_of_focus": "Incident Response",
+    "documentation_artifact": "Incident Reporting Capability",
+    "artifact_description": "Documented evidence of a capability to provide situational awareness of incidents to internal stakeholders and generated necessary reporting to affected clients, applicable third-parties and regulatory authorities.",
+    "scf_control_mappings": "IRO-10\nIRO-10.2",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-IAO-01": {
+    "area_of_focus": "Information Assurance",
+    "documentation_artifact": "Information Assurance Program (IAP)",
+    "artifact_description": "Documented evidence of a Information Assurance Program (IAP). This is program-level documentation in the form of a runbook, playbook or a similar format provides guidance on organizational practices that support existing policies and standards.",
+    "scf_control_mappings": "IAO-01\nIAO-02.4",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-IAO-02": {
+    "area_of_focus": "Information Assurance",
+    "documentation_artifact": "Artificial Intelligence Test, Evaluation, Validation & Verification (AI TEVV)",
+    "artifact_description": "Documented evidence of Artificial Intelligence Test, Evaluation, Validation & Verification (AI TEVV) practices to enable AI-related testing, identification of incidents and information sharing.",
+    "scf_control_mappings": "AAT-10",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-IAO-03": {
+    "area_of_focus": "Information Assurance",
+    "documentation_artifact": "Pre-Production Controls Testing",
+    "artifact_description": "Documented evidence of pre-production  cybersecurity & data protection controls testing to determine the extent to which the controls are implemented correctly, operating as intended and producing the desired outcome with respect to meeting expected requirements.",
+    "scf_control_mappings": "IAO-02\nIAO-02.4\nIAO-03.2",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-MNT-01": {
+    "area_of_focus": "Maintenance",
+    "documentation_artifact": "Maintenance - Authorized Maintenance Personnel",
+    "artifact_description": "Documented evidence of personnel who have designated maintenance roles.",
+    "scf_control_mappings": "MNT-06.1",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-MNT-02": {
+    "area_of_focus": "Maintenance",
+    "documentation_artifact": "Maintenance Plan",
+    "artifact_description": "Documented evidence of a Maintenance Plan. This is program-level documentation in the form of a runbook, playbook or a similar format provides guidance on organizational practices that support existing policies and standards.",
+    "scf_control_mappings": "MNT-01",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-MNT-03": {
+    "area_of_focus": "Maintenance",
+    "documentation_artifact": "Patch Management",
+    "artifact_description": "Documented evidence of maintenance activities for systems, applications and services management (e.g., patch management).",
+    "scf_control_mappings": "VPM-01\nVPM-04\nVPM-05",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-MNT-04": {
+    "area_of_focus": "Maintenance",
+    "documentation_artifact": "Infrastructure Maintenance",
+    "artifact_description": "Documented evidence of maintenance activities for the organization's infrastructure and supporting systems.",
+    "scf_control_mappings": "MNT-01\nMNT-02\nMNT-03\nMNT-03.1",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-NET-01": {
+    "area_of_focus": "Network Security",
+    "documentation_artifact": "Content / DNS Filtering",
+    "artifact_description": "Documented evidence of the methods that content / DNS filtering is implemented to prevent Internet traffic from prohibited content and/or hostile web sites.",
+    "scf_control_mappings": "NET-18\nNET-18.1",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-NET-02": {
+    "area_of_focus": "Network Security",
+    "documentation_artifact": "Wireless Rogue Detection",
+    "artifact_description": "Documented evidence of automated or manual means to detect rogue wireless devices.",
+    "scf_control_mappings": "NET-15.5",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-NET-03": {
+    "area_of_focus": "Network Security",
+    "documentation_artifact": "Work From Anywhere (WFA) Guidance (remote workers)",
+    "artifact_description": "Documented evidence of administrative and technical measures that are enforced at \"alternate work sites\" which includes working from home or working while traveling on business.",
+    "scf_control_mappings": "NET-14\nNET-14.5",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-NET-04": {
+    "area_of_focus": "Network Security",
+    "documentation_artifact": "Network Security Controls (NSC)",
+    "artifact_description": "Documented evidence of the organization's network security controls (e.g., boundary protections, content filtering, wireless infrastructure, etc.).",
+    "scf_control_mappings": "NET-01",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-NET-05": {
+    "area_of_focus": "Network Security",
+    "documentation_artifact": "Zero Trust Architecture (ZTA)",
+    "artifact_description": "Documented evidence of controls that would enable the organization to claim conformity with Zero Trust (ZT) principles.",
+    "scf_control_mappings": "NET-01.1",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-PES-01": {
+    "area_of_focus": "Physical Security",
+    "documentation_artifact": "Environmental Monitoring",
+    "artifact_description": "Documented evidence of environmental monitoring (e.g., water leaks, temperature, humidity, etc.)",
+    "scf_control_mappings": "PES-01\nPES-07\nPES-07.5\nPES-08\nPES-09",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-PES-02": {
+    "area_of_focus": "Physical Security",
+    "documentation_artifact": "Visitor Logbook",
+    "artifact_description": "Documented evidence of a visitor management and logging visitor activities.",
+    "scf_control_mappings": "PES-03.3\nPES-06\nPES-06.4",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-PES-03": {
+    "area_of_focus": "Physical Security ",
+    "documentation_artifact": "Defined Physical Security Roles",
+    "artifact_description": "Documented evidence of defined physical access control-specific roles that limit physical access to rooms and/or facilities.",
+    "scf_control_mappings": "PES-02\nPES-02.1",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-PES-04": {
+    "area_of_focus": "Physical Security ",
+    "documentation_artifact": "Site Security Plan (Site Plan)",
+    "artifact_description": "Documented evidence of a site security plan (site plan).",
+    "scf_control_mappings": "PES-01.1",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-PES-05": {
+    "area_of_focus": "Physical Security ",
+    "documentation_artifact": "Physical Security Operations",
+    "artifact_description": "Documented evidence of the organization's physical security capabilities as it pertains to operating and monitoring Physical Access Control (PAC)mechanisms.",
+    "scf_control_mappings": "PES-01\nPES-02\nPES-02.1\nPES-03\nPES-05",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-PRI-01": {
+    "area_of_focus": "Privacy",
+    "documentation_artifact": "Accounting of Disclosures",
+    "artifact_description": "Documented evidence of accounting for privacy-related disclosures.",
+    "scf_control_mappings": "PRI-14.1",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-PRI-02": {
+    "area_of_focus": "Privacy",
+    "documentation_artifact": "Authorized Use",
+    "artifact_description": "Documented evidence of authorized use definitions for privacy-related data operations.",
+    "scf_control_mappings": "PRI-04\nPRI-04.1\nPRI-05\nPRI-05.1",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-PRI-03": {
+    "area_of_focus": "Privacy",
+    "documentation_artifact": "Data Authority Registrations",
+    "artifact_description": "Documented evidence of registrations made with applicable data authorities for privacy-related data processing.",
+    "scf_control_mappings": "PRI-15",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-PRI-04": {
+    "area_of_focus": "Privacy",
+    "documentation_artifact": "Data Protection Impact Assessment (DPIA)",
+    "artifact_description": "Documented evidence of Data Protection Impact Assessment (DPIA).",
+    "scf_control_mappings": "RSK-10",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-PRI-05": {
+    "area_of_focus": "Privacy",
+    "documentation_artifact": "Data Sharing Agreement",
+    "artifact_description": "Documented evidence of formal data sharing practices that address, at a minimum:\n\u2022 The business justification for the data sharing;\n\u2022 The type / category of data being shared;\n\u2022 The third-parties the data is being shared with;\n\u2022 Lawful bases for data sharing; and\n\u2022 Data subject rights.",
+    "scf_control_mappings": "PRI-01.5\nPRI-07\nPRI-07.1\nPRI-07.2",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-PRI-06": {
+    "area_of_focus": "Privacy",
+    "documentation_artifact": "Data Subject Access",
+    "artifact_description": "Documented evidence of how data subject access requests are handled that includes intake through remediation.",
+    "scf_control_mappings": "PRI-06",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-PRI-07": {
+    "area_of_focus": "Privacy",
+    "documentation_artifact": "Personal Data Categories",
+    "artifact_description": "Documented evidence of formal personal data categories.",
+    "scf_control_mappings": "PRI-05.7",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-PRI-08": {
+    "area_of_focus": "Privacy",
+    "documentation_artifact": "Data Privacy Notice",
+    "artifact_description": "Documented evidence of a publicly-accessible data privacy notice.",
+    "scf_control_mappings": "PRI-02",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-PRM-01": {
+    "area_of_focus": "Resource Management",
+    "documentation_artifact": "Cybersecurity Business Plan (CBP)",
+    "artifact_description": "Documented evidence of a cybersecurity-specific business plan that documents a strategic plan and discrete objectives.",
+    "scf_control_mappings": "GOV-08\nPRM-01.1\nPRM-03",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-PRM-02": {
+    "area_of_focus": "Resource Management",
+    "documentation_artifact": "Portfolio Roadmap",
+    "artifact_description": "Documented evidence of the organization's roadmap for implementing cybersecurity-related initiatives and technologies.",
+    "scf_control_mappings": "PRM-01\nPRM-02\nPRM-03",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-PRM-03": {
+    "area_of_focus": "Resource Management",
+    "documentation_artifact": "Secure Development Lifecycle (SDLC)",
+    "artifact_description": "Documented evidence of a secure development lifecycle that the organization utilizes for new initiatives or significant changes to existing initiatives to ensure cybersecurity & data privacy principles are identified and implemented by default.",
+    "scf_control_mappings": "PRM-04\nPRM-05\nPRM-06\nPRM-07",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-PRM-04": {
+    "area_of_focus": "Resource Management",
+    "documentation_artifact": "Targeted Maturity Level",
+    "artifact_description": "Documented evidence of a targeted level of control maturity from a Capability Maturity Model (CMM).",
+    "scf_control_mappings": "PRM-01.2",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-RSK-01": {
+    "area_of_focus": "Risk Management",
+    "documentation_artifact": "Risk Management Program (RMP)",
+    "artifact_description": "Documented evidence of a Risk Management Program (RMP). This is program-level documentation in the form of a runbook, playbook or a similar format provides guidance on organizational practices that support existing policies and standards.",
+    "scf_control_mappings": "RSK-01\nRSK-01.1\nRSK-02\nRSK-12",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-RSK-02": {
+    "area_of_focus": "Risk Management",
+    "documentation_artifact": "Supply Chain Risk Management (SCRM) Plan",
+    "artifact_description": "Documented evidence of a Supply Chain Risk Management (SCRM) Plan. This is program-level documentation in the form of a playbook, concept of operations or a similar format provides guidance on organizational practices that support existing policies and standards. ",
+    "scf_control_mappings": "IRO-10.4\nRSK-09\nTPM-03\nTPM-05\nTPM-05.2",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-RSK-03": {
+    "area_of_focus": "Risk Management",
+    "documentation_artifact": "Plan of Actions & Milestones (POA&M) / Risk Register",
+    "artifact_description": "Documented evidence of a POA&M, or risk register, that tracks control deficiencies from identification through remediation.",
+    "scf_control_mappings": "AST-02.4\nCPL-02\nIAO-05\nRSK-04.1\nRSK-06\nRSK-06.1\nRSK-06.2\nVPM-02\nVPM-03",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-RSK-04": {
+    "area_of_focus": "Risk Management",
+    "documentation_artifact": "Cybersecurity Risk Assessment (RA)",
+    "artifact_description": "Documented evidence of a cybersecurity-specific risk assessment.",
+    "scf_control_mappings": "RSK-02\nRSK-02.1\nRSK-03\nRSK-04\nRSK-05\nVPM-02\nVPM-03",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-RSK-05": {
+    "area_of_focus": "Risk Management",
+    "documentation_artifact": "Supply Chain Risk Assessment (SCRA)",
+    "artifact_description": "Documented evidence of supply chain-specific risk assessment that evaluates risks that are specific to its supply chain.",
+    "scf_control_mappings": "RSK-09.1",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-RSK-06": {
+    "area_of_focus": "Risk Management",
+    "documentation_artifact": "Risk Threshold",
+    "artifact_description": "Documented evidence the organization has a defined risk threshold.",
+    "scf_control_mappings": "RSK-01.1\nRSK-01.3",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-RSK-07": {
+    "area_of_focus": "Risk Management",
+    "documentation_artifact": "Risk Tolerance",
+    "artifact_description": "Documented evidence the organization has a defined risk tolerance.",
+    "scf_control_mappings": "RSK-01.1\nRSK-01.4",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-RSK-08": {
+    "area_of_focus": "Risk Management",
+    "documentation_artifact": "Risk Appetite",
+    "artifact_description": "Documented evidence the organization has a defined risk appetite.",
+    "scf_control_mappings": "RSK-01.1\nRSK-01.5",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-RSK-09": {
+    "area_of_focus": "Risk Management",
+    "documentation_artifact": "Risk Catalog",
+    "artifact_description": "Documented evidence of a risk catalog.",
+    "scf_control_mappings": "RSK-03.1",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-TDA-01": {
+    "area_of_focus": "Technology Design & Acquisition",
+    "documentation_artifact": "Secure Software Development Principles (SSDP)",
+    "artifact_description": "Documented evidence of a Secure Software Development Principles (SSDP). This is program-level documentation in the form of a runbook, playbook or a similar format provides guidance on organizational practices that support existing policies and standards.",
+    "scf_control_mappings": "SEA-01\nTDA-01\nTDA-14\nTDA-14.1\nTDA-14.2",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-TDA-02": {
+    "area_of_focus": "Technology Design & Acquisition",
+    "documentation_artifact": "Secure Engineering & Data Privacy (SEDP)",
+    "artifact_description": "Documented evidence of a Secure Engineering & Data Privacy (SEDP) program. This is program-level documentation in the form of a runbook, playbook or a similar format provides guidance on organizational practices that support existing policies and standards.",
+    "scf_control_mappings": "SEA-01\nTDA-01\nTDA-14\nTDA-14.1\nTDA-14.2",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-TDA-03": {
+    "area_of_focus": "Technology Design & Acquisition",
+    "documentation_artifact": "Application Security Testing (AST)",
+    "artifact_description": "Documented evidence of application security testing (e.g., DAST, SAST, fuzzing, etc.).",
+    "scf_control_mappings": "TDA-06.2\nTDA-09\nTDA-09.1\nTDA-09.2\nTDA-09.3\nTDA-09.4\nTDA-09.5\nTDA-09.6",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-TDA-04": {
+    "area_of_focus": "Technology Design & Acquisition",
+    "documentation_artifact": "Design and Development Plan (DDP)",
+    "artifact_description": "Documented evidence of an engineering method to control the design process and govern the lifecycle of the product/service.",
+    "scf_control_mappings": "SEA-01\nSEA-02\nSEA-03\nTDA-02.3\nTDA-05\nTDA-06.3\nTDA-14\nTDA-14.1\nTDA-14.2",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-TDA-05": {
+    "area_of_focus": "Technology Design & Acquisition",
+    "documentation_artifact": "Failure Mode and Effect Analysis (FMEA)",
+    "artifact_description": "Documented evidence of an engineering method designed to define, identify, and present solutions for system failures, problems, or errors.",
+    "scf_control_mappings": "TDA-01.1\nTDA-06.5\nTDA-09",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-TDA-06": {
+    "area_of_focus": "Technology Design & Acquisition",
+    "documentation_artifact": "Multi Patient Harm View (MPHV)",
+    "artifact_description": "Documented evidence of a description of a Multi Patient Harm View (MPHV) that explains how the device / system defends against and/or responds to attacks with the potential to harm multiple patients. [note MPHV is specific to medical device manufacturers]",
+    "scf_control_mappings": "TDA-01.1\nTDA-02\nTDA-04\nTDA-04.1",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-TDA-07": {
+    "area_of_focus": "Technology Design & Acquisition",
+    "documentation_artifact": "Ports, Protocols & Services (PPS)",
+    "artifact_description": "Documented evidence of all ports, protocols and services in use by the system, application or service.",
+    "scf_control_mappings": "TDA-01.1\nTDA-02.1\nTDA-02.5\nTPM-04.2",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-TDA-08": {
+    "area_of_focus": "Technology Design & Acquisition",
+    "documentation_artifact": "Secure Engineering Principles (SEP)",
+    "artifact_description": "Documented evidence of defined secure engineering principles used to ensure Sensitivity, Integrity, Availability & Safety (CIAS) concerns are properly addressed in the design and implementation of systems, applications and services.",
+    "scf_control_mappings": "SEA-01\nTDA-01\nTDA-06\nTDA-14\nTDA-14.1\nTDA-14.2",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-TDA-09": {
+    "area_of_focus": "Technology Design & Acquisition",
+    "documentation_artifact": "Security Architecture View",
+    "artifact_description": "Documented evidence that identifies security-relevant system elements and their interfaces:\n\u2022 Define security context, domains, boundaries, and external interfaces of the system;\n\u2022 Align the architecture with (a) the system security objectives and requirements, (b) security design characteristics; and\n\u2022 Establish traceability of architecture elements to user and system security requirements.",
+    "scf_control_mappings": "CLD-02\nSEA-01\nSEA-02\nSEA-03",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-TDA-10": {
+    "area_of_focus": "Technology Design & Acquisition",
+    "documentation_artifact": "Security Use Case View (SUCV)",
+    "artifact_description": "Documented evidence of diagrams, with explanatory text, describing various security scenarios in each of the operational and clinical functionality states of the system and how the system addresses each scenario architecturally. [note SUCV is specific to medical device manufacturers]",
+    "scf_control_mappings": "TDA-04\nTDA-04.1\nTDA-06.2",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-TDA-11": {
+    "area_of_focus": "Technology Design & Acquisition",
+    "documentation_artifact": "Software Assurance Maturity Model (SAMM)",
+    "artifact_description": "Documented evidence of a Software Assurance Maturity Model (SAMM).",
+    "scf_control_mappings": "TDA-06\nTDA-06.3",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-TDA-12": {
+    "area_of_focus": "Technology Design & Acquisition",
+    "documentation_artifact": "Software Bill of Materials (SBOM)",
+    "artifact_description": "Documented evidence of a Software Bill of Materials (SBOM).",
+    "scf_control_mappings": "TDA-04.2",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-TDA-13": {
+    "area_of_focus": "Technology Design & Acquisition",
+    "documentation_artifact": "Software Escrow",
+    "artifact_description": "Documented evidence of a software escrow solution.",
+    "scf_control_mappings": "TDA-20.3",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-TDA-14": {
+    "area_of_focus": "Technology Design & Acquisition",
+    "documentation_artifact": "System Security & Privacy Plan (SSPP)",
+    "artifact_description": "Documented evidence of at least one (1) System Security Plan (SSPP) that covers the sensitive/regulated data environment. There may be multiple SSPPs, based on applicable contracts.",
+    "scf_control_mappings": "AST-02.4\nIAO-03",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-TDA-15": {
+    "area_of_focus": "Technology Design & Acquisition",
+    "documentation_artifact": "Updateability / Patchability View",
+    "artifact_description": "Documented evidence of a description of the end-to-end process permitting software updates and patches to be deployed to the device/service.",
+    "scf_control_mappings": "TDA-01.1\nTDA-01.2\nTDA-04.1",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-TDA-16": {
+    "area_of_focus": "Technology Design & Acquisition",
+    "documentation_artifact": "Vulnerability Disclosure Program (VDP)",
+    "artifact_description": "Documented evidence of a Vulnerability Disclosure Program (VDP) (e.g., bug bounty).",
+    "scf_control_mappings": "THR-06",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-THR-01": {
+    "area_of_focus": "Threat Management",
+    "documentation_artifact": "Indicators of Exposure (IOE)",
+    "artifact_description": "Documented evidence of defined Indicators of Exposure (IOE).",
+    "scf_control_mappings": "THR-02",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-THR-02": {
+    "area_of_focus": "Threat Management",
+    "documentation_artifact": "Industry Associations / Memberships",
+    "artifact_description": "Documented evidence of industry associations the organization utilizes to maintain situational awareness of evolving threats and trends.",
+    "scf_control_mappings": "GOV-07",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-THR-03": {
+    "area_of_focus": "Threat Management",
+    "documentation_artifact": "Threat Intelligence Feeds (TIF)",
+    "artifact_description": "Documented evidence of threat intelligence feeds.",
+    "scf_control_mappings": "THR-03",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-THR-04": {
+    "area_of_focus": "Threat Management",
+    "documentation_artifact": "Threat Intelligence Program (TIP)",
+    "artifact_description": "Documented evidence of a formal capability that intakes and analysis threat information to determine specific threat to the organization and necessary actions to mitigate the threat(s).",
+    "scf_control_mappings": "THR-01\nTHR-04\nTHR-05",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-THR-05": {
+    "area_of_focus": "Threat Management",
+    "documentation_artifact": "Threat Mitigation",
+    "artifact_description": "Documented evidence of steps taken to mitigate identified threats.",
+    "scf_control_mappings": "TDA-06.2\nTHR-07\nVPM-01\nVPM-04",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-THR-06": {
+    "area_of_focus": "Threat Management",
+    "documentation_artifact": "Threat Catalog",
+    "artifact_description": "Documented evidence of a threat catalog.",
+    "scf_control_mappings": "THR-09",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-THR-07": {
+    "area_of_focus": "Threat Management",
+    "documentation_artifact": "Threat Analysis",
+    "artifact_description": "Documented evidence of a completed threat analysis.",
+    "scf_control_mappings": "THR-10",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-THR-08": {
+    "area_of_focus": "Threat Management",
+    "documentation_artifact": "Behavioral Baselining",
+    "artifact_description": "Documented evidence of behavioral baselining to determine normal vs abnormal activities.",
+    "scf_control_mappings": "THR-11",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-TPM-01": {
+    "area_of_focus": "Third-Party Management",
+    "documentation_artifact": "Third-Party Contracts",
+    "artifact_description": "Documented evidence of third-party contractual obligations for cybersecurity & data privacy protections.",
+    "scf_control_mappings": "PRI-07\nPRI-07.1\nPRI-07.2\nTPM-01\nTPM-03.2\nTPM-03.3\nTPM-04.1\nTPM-05\nTPM-04.3\nTPM-05.3\nTPM-05.6\nTPM-06\nTPM-10\nTPM-11",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-TPM-02": {
+    "area_of_focus": "Third-Party Management",
+    "documentation_artifact": "Third-Party Criticality Assessment",
+    "artifact_description": "Documented evidence of third-party criticality assessment that evaluates the critical nature of each third-party the organization works with.",
+    "scf_control_mappings": "RSK-02\nRSK-02.1\nTDA-06.1\nTPM-02\nTPM-03.2\nTPM-03.3\nTPM-04.1",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-TPM-03": {
+    "area_of_focus": "Third-Party Management",
+    "documentation_artifact": "Third-Party Service Reviews",
+    "artifact_description": "Documented evidence of a formal, annual stakeholder review of third-party services for each Third-Party Service Provider (TSP).",
+    "scf_control_mappings": "TPM-01\nTPM-03.2\nTPM-03.3\nTPM-04.1\nTPM-05\nTPM-05.5\nTPM-08\nTPM-09",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-TPM-04": {
+    "area_of_focus": "Third-Party Management",
+    "documentation_artifact": "Service Level Agreements (SLAs)",
+    "artifact_description": "Documented evidence of third-party Service Level Agreements (SLAs) to support business operations.",
+    "scf_control_mappings": "BCD-09.3\nBCD-10.1\nOPS-03",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-TPM-05": {
+    "area_of_focus": "Third-Party Management",
+    "documentation_artifact": "Break Clauses",
+    "artifact_description": "Documented evidence of \"break clauses\" in third-party contracts.",
+    "scf_control_mappings": "TPM-03.2\nTPM-03.3\nTPM-05.7",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-VPM-01": {
+    "area_of_focus": "Vulnerability & Patch Management",
+    "documentation_artifact": "Vulnerability & Patch Management Program (VPMP)",
+    "artifact_description": "Documented evidence of a Vulnerability & Patch Management Program (VPMP). This is program-level documentation in the form of a runbook, playbook or a similar format provides guidance on organizational practices that support existing policies and standards.",
+    "scf_control_mappings": "VPM-01\nVPM-02\nVPM-03",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-VPM-02": {
+    "area_of_focus": "Vulnerability Management",
+    "documentation_artifact": "Penetration Testing - Application",
+    "artifact_description": "Documented evidence of Application Security Testing (AST) activities:\n\u2022 Abuse case, malformed, and unexpected inputs (e.g., Robustness or Fuzz testing);\n\u2022 Attack surface analysis;\n\u2022 Vulnerability chaining;\n\u2022 Closed box testing of known vulnerability scanning;\n\u2022 Software composition analysis of binary executable files; and/or\n\u2022 Static and dynamic code analysis, including testing for credentials that are \u201chardcoded,\u201d default, easily guessed, and easily compromised.",
+    "scf_control_mappings": "VPM-07",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-VPM-03": {
+    "area_of_focus": "Vulnerability Management",
+    "documentation_artifact": "Penetration Testing - Network",
+    "artifact_description": "Documented evidence of internal and external network penetration testing activities that focus on discovering and exploiting security vulnerabilities.",
+    "scf_control_mappings": "VPM-07",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-VPM-04": {
+    "area_of_focus": "Vulnerability Management",
+    "documentation_artifact": "Red Team Testing",
+    "artifact_description": "Documented evidence of \"red team\" testing.",
+    "scf_control_mappings": "VPM-07.1",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-VPM-05": {
+    "area_of_focus": "Vulnerability Management",
+    "documentation_artifact": "Vulnerability Assessments",
+    "artifact_description": "Documented evidence of internal and external vulnerability assessment activities.",
+    "scf_control_mappings": "VPM-06\nVPM-06.6\nVPM-06.7",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  },
+  "E-VPM-06": {
+    "area_of_focus": "Vulnerability Management",
+    "documentation_artifact": "Attack Surface Scope",
+    "artifact_description": "Documented evidence of the organization defining its attack surface (e.g., may be in the form of graphical network diagrams or other forms of written documentation).",
+    "scf_control_mappings": "VPM-01.1",
+    "sources": [],
+    "llm_availability_status": "UNAVAILABLE",
+    "uploads": []
+  }
+}
