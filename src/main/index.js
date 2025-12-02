@@ -1443,36 +1443,39 @@ app.whenReady().then(async () => {
     }
     
     // STEP 3: Check and install Steampipe plugins (Azure + Azure AD) - ONLY IF NOT INSTALLED
-    console.log('[App] Step 2: Checking Steampipe plugins...');
-    try {
-      // Check Azure plugin first
-      const azurePluginCheck = await powerpipeService.checkAzurePluginInstalled();
-      if (azurePluginCheck.installed) {
-        console.log('[App] ✓ Azure plugin already installed');
-        installationStatus.azurePlugin = { installed: true, checked: true, timestamp: Date.now() };
-      } else {
-        console.log('[App] Installing Azure plugin...');
-        const installResult = await powerpipeService.installAzurePlugin();
-        if (installResult.success) {
-          console.log('[App] ✓ Azure plugin installed');
+    if (!powerpipeService) {
+      console.warn('[App] ⚠️  Powerpipe service not available - skipping plugin installation');
+    } else {
+      console.log('[App] Step 2: Checking Steampipe plugins...');
+      try {
+        // Check Azure plugin first
+        const azurePluginCheck = await powerpipeService.checkAzurePluginInstalled();
+        if (azurePluginCheck.installed) {
+          console.log('[App] ✓ Azure plugin already installed');
           installationStatus.azurePlugin = { installed: true, checked: true, timestamp: Date.now() };
         } else {
-          console.warn('[App] ⚠️  Azure plugin installation failed:', installResult.error);
-          installationStatus.azurePlugin = { installed: false, checked: true, timestamp: Date.now() };
+          console.log('[App] Installing Azure plugin...');
+          const installResult = await powerpipeService.installAzurePlugin();
+          if (installResult.success) {
+            console.log('[App] ✓ Azure plugin installed');
+            installationStatus.azurePlugin = { installed: true, checked: true, timestamp: Date.now() };
+          } else {
+            console.warn('[App] ⚠️  Azure plugin installation failed:', installResult.error);
+            installationStatus.azurePlugin = { installed: false, checked: true, timestamp: Date.now() };
+          }
         }
-      }
-      
-      // Azure AD plugin - install (it handles "already installed" internally)
-      console.log('[App] Checking Azure AD plugin...');
-      const azureADResult = await powerpipeService.installAzureADPlugin();
-      if (azureADResult.success) {
-        console.log('[App] ✓ Azure AD plugin ready');
-        installationStatus.azureADPlugin = { installed: true, checked: true, timestamp: Date.now() };
-      } else {
-        console.warn('[App] ⚠️  Azure AD plugin skipped (non-critical)');
-        installationStatus.azureADPlugin = { installed: false, checked: true, timestamp: Date.now() };
-      }
-      
+        
+        // Azure AD plugin - install (it handles "already installed" internally)
+        console.log('[App] Checking Azure AD plugin...');
+        const azureADResult = await powerpipeService.installAzureADPlugin();
+        if (azureADResult.success) {
+          console.log('[App] ✓ Azure AD plugin ready');
+          installationStatus.azureADPlugin = { installed: true, checked: true, timestamp: Date.now() };
+        } else {
+          console.warn('[App] ⚠️  Azure AD plugin skipped (non-critical)');
+          installationStatus.azureADPlugin = { installed: false, checked: true, timestamp: Date.now() };
+        }
+        
         saveInstallationStatus();
       } catch (error) {
         console.warn('[App] Plugin check/installation failed:', error.message);
@@ -1490,46 +1493,53 @@ app.whenReady().then(async () => {
         
         // Check each mod before installing
         for (const mod of AZURE_MODS) {
-      try {
-        const modCheck = await powerpipeService.checkModInstalled(mod.repo);
-        if (modCheck) {
-          console.log(`[App]   ✓ ${mod.name} already installed`);
-        } else {
-          console.log(`[App]   Installing ${mod.name}...`);
-          const result = await powerpipeService.installPowerpipeMod(mod.repo);
-          if (result.success) {
-            console.log(`[App]   ✓ ${mod.name} installed`);
-          } else {
-            console.warn(`[App]   ⚠️  ${mod.name} installation failed:`, result.error);
+          try {
+            const modCheck = await powerpipeService.checkModInstalled(mod.repo);
+            if (modCheck) {
+              console.log(`[App]   ✓ ${mod.name} already installed`);
+            } else {
+              console.log(`[App]   Installing ${mod.name}...`);
+              const result = await powerpipeService.installPowerpipeMod(mod.repo);
+              if (result.success) {
+                console.log(`[App]   ✓ ${mod.name} installed`);
+              } else {
+                console.warn(`[App]   ⚠️  ${mod.name} installation failed:`, result.error);
+              }
+            }
+          } catch (error) {
+            console.warn(`[App]   ⚠️  ${mod.name} check/install error:`, error.message);
           }
         }
-      } catch (error) {
-        console.warn(`[App]   ⚠️  ${mod.name} check/install error:`, error.message);
+        
+        console.log('[App]   ✓ Mod check/installation complete');
+      } catch (modError) {
+        console.warn('[App] ⚠️  Mod installation failed:', modError.message);
       }
     }
     
-    console.log('[App]   ✓ Mod check/installation complete');
-    
     // STEP 5: Check and install Azure CLI if needed (ONLY IF NOT INSTALLED)
-    console.log('[App] Step 4: Checking Azure CLI...');
-    try {
-      const cliCheck = await powerpipeService.checkAzureCLI();
-      if (cliCheck.installed) {
-        console.log('[App] ✓ Azure CLI already installed');
-        installationStatus.azureCLI = { installed: true, checked: true, timestamp: Date.now() };
-      } else {
-        console.log('[App] Azure CLI not found, installing...');
-        const installResult = await powerpipeService.installAzureCLI();
-        if (installResult.success) {
-          console.log('[App] ✓ Azure CLI installed');
+    if (!powerpipeService) {
+      console.warn('[App] ⚠️  Powerpipe service not available - skipping Azure CLI check');
+    } else {
+      console.log('[App] Step 4: Checking Azure CLI...');
+      try {
+        const cliCheck = await powerpipeService.checkAzureCLI();
+        if (cliCheck.installed) {
+          console.log('[App] ✓ Azure CLI already installed');
           installationStatus.azureCLI = { installed: true, checked: true, timestamp: Date.now() };
         } else {
-          console.warn('[App] ⚠️  Azure CLI installation failed (user can install manually):', installResult.error);
-          installationStatus.azureCLI = { installed: false, checked: true, timestamp: Date.now() };
+          console.log('[App] Azure CLI not found, installing...');
+          const installResult = await powerpipeService.installAzureCLI();
+          if (installResult.success) {
+            console.log('[App] ✓ Azure CLI installed');
+            installationStatus.azureCLI = { installed: true, checked: true, timestamp: Date.now() };
+          } else {
+            console.warn('[App] ⚠️  Azure CLI installation failed (user can install manually):', installResult.error);
+            installationStatus.azureCLI = { installed: false, checked: true, timestamp: Date.now() };
+          }
         }
-      }
-      saveInstallationStatus();
-    } catch (error) {
+        saveInstallationStatus();
+      } catch (error) {
         console.warn('[App] Azure CLI check failed (non-critical):', error.message);
         installationStatus.azureCLI = { installed: false, checked: true, timestamp: Date.now() };
         saveInstallationStatus();
