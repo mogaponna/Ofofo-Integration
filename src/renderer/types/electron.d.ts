@@ -61,7 +61,8 @@ declare global {
           installAzureCLI: () => Promise<{ success: boolean; error?: string }>;
           authenticateAzureCLI: () => Promise<{ success: boolean; accounts?: any[]; message?: string; error?: string }>;
           getAzureSubscriptions: () => Promise<{ success: boolean; subscriptions?: any[]; error?: string }>;
-          setupAzure: (data: { subscriptionId: string }) => Promise<{ success: boolean; subscriptions?: any[]; tables?: string[]; message?: string; error?: string }>;
+          setupAzure: (data: { subscriptionId: string; tenantId?: string }) => Promise<{ success: boolean; subscriptions?: any[]; message?: string; error?: string }>;
+          configurePlugin: (subscriptionId: string) => Promise<{ success: boolean; cached?: boolean; configFile?: string; error?: string }>;
           getAzureTables: () => Promise<{ success: boolean; tables?: string[]; error?: string }>;
           querySteampipe: (data: { query: string }) => Promise<{ success: boolean; data?: any; error?: string }>;
           installAzureMod: () => Promise<{ success: boolean; error?: string }>;
@@ -73,8 +74,8 @@ declare global {
       dataroom: {
         saveReport: (data: { fileName: string; content: string; userId: string; subprocessId: string; subprocessName?: string; modId?: string; benchmarkId?: string }) => Promise<{ success: boolean; filePath?: string; fileId?: string; error?: string }>;
       };
-      // Azure initialization
-      ensureAzurePrerequisites: (subscriptionId?: string) => Promise<{ success: boolean; results?: any; steps?: string[]; error?: string }>;
+      // Installation status
+      getInstallationStatus: () => Promise<{ success: boolean; status?: any }>;
     };
   }
 }

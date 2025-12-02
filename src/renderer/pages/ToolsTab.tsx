@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Plus, Cloud, CheckCircle, Loader2, Database } from 'lucide-react';
 import { Page } from '../App';
-import InitializationModal from '../components/InitializationModal';
 
 interface ToolsTabProps {
   onSelectSubprocessor: (page: Page, subprocessId?: string) => void;
@@ -38,14 +37,7 @@ export default function ToolsTab({ onSelectSubprocessor, user }: ToolsTabProps) 
   const [setupMessage, setSetupMessage] = useState('');
   const [azureSubscriptions, setAzureSubscriptions] = useState<AzureSubscription[]>([]);
   const [selectedSubscription, setSelectedSubscription] = useState<string>('');
-  const [azureTables, setAzureTables] = useState<string[]>([]);
   const [settingUp, setSettingUp] = useState(false);
-  
-  // Initialization modal states
-  const [showInitModal, setShowInitModal] = useState(false);
-  const [initSteps, setInitSteps] = useState<string[]>([]);
-  const [currentInitStep, setCurrentInitStep] = useState(0);
-  const [initError, setInitError] = useState<string | undefined>();
 
   useEffect(() => {
     loadSubprocesses();
@@ -83,29 +75,12 @@ export default function ToolsTab({ onSelectSubprocessor, user }: ToolsTabProps) 
 
   const handleSetupAzure = async () => {
     setShowSubprocessModal(true);
-    setSetupStep('check');
-    setSetupMessage('Checking Azure CLI...');
+    setSetupStep('auth');
+    setSetupMessage('Authenticating with Azure...');
     
     try {
-      // Step 1: Check if Azure CLI is installed
-      const cliCheck = await window.electron.subprocess.checkAzureCLI();
-      
-      if (!cliCheck.installed) {
-        setSetupStep('install');
-        setSetupMessage('Installing Azure CLI... This may take a few minutes.');
-        
-        const installResult = await window.electron.subprocess.installAzureCLI();
-        if (!installResult.success) {
-          alert('Failed to install Azure CLI: ' + installResult.error);
-          setShowSubprocessModal(false);
-          return;
-        }
-      }
-      
-      // Step 2: Authenticate with Azure CLI
-      setSetupStep('auth');
-      setSetupMessage('Opening browser for Azure login... Please sign in.');
-      
+      // Azure CLI is already installed at startup, just authenticate
+      // Step 1: Authenticate with Azure CLI
       const authResult = await window.electron.subprocess.authenticateAzureCLI();
       if (!authResult.success) {
         alert('Azure authentication failed: ' + authResult.error);
@@ -113,7 +88,7 @@ export default function ToolsTab({ onSelectSubprocessor, user }: ToolsTabProps) 
         return;
       }
       
-      // Step 3: Get subscriptions
+      // Step 2: Get subscriptions
       setSetupStep('subscriptions');
       setSetupMessage('Loading your Azure subscriptions...');
       
@@ -147,11 +122,15 @@ export default function ToolsTab({ onSelectSubprocessor, user }: ToolsTabProps) 
     
     setSettingUp(true);
     setSetupStep('setup');
-    setSetupMessage('Setting up Azure integration... Installing plugin, configuring, and loading tables.');
+    setSetupMessage('Configuring Azure integration...');
     
     try {
+      const selectedSub = azureSubscriptions.find(s => s.id === selectedSubscription);
+      
+      // Simple setup - just configure plugin for this subscription (FAST)
       const setupResult = await window.electron.subprocess.setupAzure({
-        subscriptionId: selectedSubscription
+        subscriptionId: selectedSubscription,
+        tenantId: selectedSub?.tenantId
       });
       
       if (!setupResult.success) {
@@ -161,11 +140,9 @@ export default function ToolsTab({ onSelectSubprocessor, user }: ToolsTabProps) 
       }
       
       setSetupStep('complete');
-      setSetupMessage(`Setup complete! Found ${setupResult.tables?.length || 0} Azure tables.`);
-      setAzureTables(setupResult.tables || []);
+      setSetupMessage('Setup complete! Subprocess configured successfully.');
       
       // Save subprocess to database
-      const selectedSub = azureSubscriptions.find(s => s.id === selectedSubscription);
       const saveResult = await window.electron.subprocess.save({
         userId: user!.token,
         subprocessData: {
@@ -176,7 +153,6 @@ export default function ToolsTab({ onSelectSubprocessor, user }: ToolsTabProps) 
             tenantId: selectedSub?.tenantId,
           },
           connection_status: 'connected',
-          tables: setupResult.tables || [],
         }
       });
       
@@ -184,8 +160,7 @@ export default function ToolsTab({ onSelectSubprocessor, user }: ToolsTabProps) 
         await loadSubprocesses();
         setTimeout(() => {
           setShowSubprocessModal(false);
-          setSetupStep('check');
-          setAzureTables([]);
+          setSetupStep('auth');
           setAzureSubscriptions([]);
           setSelectedSubscription('');
           setSelectedSubprocessType('');
@@ -200,66 +175,10 @@ export default function ToolsTab({ onSelectSubprocessor, user }: ToolsTabProps) 
     }
   };
 
-  const handleSubprocessClick = async (subprocess: Subprocess) => {
-    // If Azure, ensure prerequisites before navigating
-    if (subprocess.subprocess_type.toLowerCase() === 'azure') {
-      await ensureAzurePrerequisites(subprocess);
-    } else {
-      // For other types, navigate directly
-      onSelectSubprocessor('subprocess' as Page, subprocess.id);
-    }
-  };
-
-  const ensureAzurePrerequisites = async (subprocess: Subprocess) => {
-    setShowInitModal(true);
-    setInitSteps([]);
-    setCurrentInitStep(0);
-    setInitError(undefined);
-
-    // Parse connection_config if it's a string
-    let connectionConfig = subprocess.connection_config;
-    if (typeof connectionConfig === 'string') {
-      try {
-        connectionConfig = JSON.parse(connectionConfig);
-      } catch (e) {
-        console.warn('Failed to parse connection_config:', e);
-      }
-    }
-    
-    const subscriptionId = connectionConfig?.subscriptionId;
-
-    try {
-      // Show initial step immediately
-      setInitSteps(['Initializing Azure plugin...']);
-      setCurrentInitStep(0);
-
-      // Use the backend function with progress updates
-      const result = await window.electron.ensureAzurePrerequisites(subscriptionId);
-
-      if (result.success) {
-        // Update steps for display as they complete
-        if (result.steps && result.steps.length > 0) {
-          setInitSteps(result.steps);
-          setCurrentInitStep(result.steps.length);
-        }
-        
-        // Small delay to show completion
-        setTimeout(() => {
-          setShowInitModal(false);
-          // Navigate to subprocess page
-          onSelectSubprocessor('subprocess' as Page, subprocess.id);
-        }, 1500);
-      } else {
-        if (result.steps && result.steps.length > 0) {
-          setInitSteps(result.steps);
-          setCurrentInitStep(result.steps.length);
-        }
-        setInitError(result.error || 'Initialization failed. Please try again.');
-      }
-    } catch (error: any) {
-      console.error('Prerequisites check error:', error);
-      setInitError(error.message || 'Failed to initialize Azure integration');
-    }
+  const handleSubprocessClick = (subprocess: Subprocess) => {
+    // Navigate immediately - everything is already installed and configured at startup!
+    // Plugin configuration happens when adding subprocess, so it's ready to use
+    onSelectSubprocessor('subprocess' as Page, subprocess.id);
   };
 
   if (loading) {
@@ -471,27 +390,6 @@ export default function ToolsTab({ onSelectSubprocessor, user }: ToolsTabProps) 
                   <CheckCircle className="w-6 h-6" />
                   <p className="text-lg">{setupMessage}</p>
                 </div>
-                
-                {azureTables.length > 0 && (
-                  <div>
-                    <h4 className="text-sm font-medium text-gray-300 mb-2">Available Tables:</h4>
-                    <div className="bg-gray-900 rounded-lg p-4 max-h-48 overflow-y-auto">
-                      <div className="grid grid-cols-2 gap-2 text-sm text-gray-400">
-                        {azureTables.slice(0, 20).map((table) => (
-                          <div key={table} className="flex items-center gap-2">
-                            <Database className="w-3 h-3" />
-                            {table}
-                          </div>
-                        ))}
-                        {azureTables.length > 20 && (
-                          <div className="col-span-2 text-center text-gray-500 mt-2">
-                            + {azureTables.length - 20} more tables
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                )}
               </div>
             )}
 
@@ -506,12 +404,6 @@ export default function ToolsTab({ onSelectSubprocessor, user }: ToolsTabProps) 
       )}
 
       {/* Initialization Modal */}
-      <InitializationModal
-        isOpen={showInitModal}
-        steps={initSteps}
-        currentStep={currentInitStep}
-        error={initError}
-      />
     </div>
   );
 }

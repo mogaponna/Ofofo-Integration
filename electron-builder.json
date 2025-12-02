@@ -43,8 +43,8 @@
     "identity": null,
     "hardenedRuntime": false,
     "gatekeeperAssess": false,
-    "entitlements": null,
-    "entitlementsInherit": null,
+    "entitlements": "entitlements.mac.plist",
+    "entitlementsInherit": "entitlements.mac.plist",
     "darkModeSupport": true
   },
   "dmg": {

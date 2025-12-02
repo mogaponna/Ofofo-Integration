@@ -143,28 +143,14 @@ export default function SubprocessPage({
 
   // Removed - Plugin is installed at app startup, no need to check/install again
 
-  const handleCheckBenchmarks = async (modId: string) => {
+  const handleCheckBenchmarks = (modId: string) => {
     const mod = AZURE_MODS.find(m => m.id === modId);
     if (!mod) return;
 
+    // Use static benchmarks from AZURE_MODS - instant! No query needed
     setSelectedModId(modId);
-    
-    // Try to fetch real benchmarks from Powerpipe
-    try {
-      const result = await window.electron.powerpipe.listBenchmarks({ modRepo: mod.repo });
-      if (result.success && result.benchmarks && result.benchmarks.length > 0) {
-        console.log(`[SubprocessPage] Fetched ${result.benchmarks.length} benchmarks for ${mod.name}`);
-        // Update mod with real benchmarks
-        // For now, we'll show the modal with static benchmarks
-        // TODO: Update AZURE_MODS with dynamic benchmarks
-      } else {
-        console.warn(`[SubprocessPage] Could not fetch benchmarks, using static list`);
-      }
-    } catch (error) {
-      console.error('[SubprocessPage] Error fetching benchmarks:', error);
-    }
-    
     setShowBenchmarkModal(true);
+    // Benchmarks are already defined in AZURE_MODS, only query when starting analysis
   };
 
   const handleStartAnalysis = async (modId: string, benchmarkId: string) => {

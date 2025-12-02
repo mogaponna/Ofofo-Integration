@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const fs = require('fs');
+const os = require('os');
 const isDev = require('electron-is-dev');
 const axios = require('axios');
 const crypto = require('crypto');
@@ -94,6 +95,60 @@ const db = require('./db');
 const emailService = require('./email-service');
 const powerpipeService = require('./powerpipe-service');
 const powerpipeInstaller = require('./powerpipe-installer');
+
+// ========================================
+// Installation Status Cache (Persistence)
+// ========================================
+// Cache installation status to avoid re-checking/re-installing on every app open
+const INSTALLATION_STATUS_FILE = path.join(os.homedir(), '.ofofo', 'installation-status.json');
+
+// Global installation status cache
+let installationStatus = {
+  powerpipe: { installed: false, checked: false, timestamp: null },
+  steampipe: { installed: false, checked: false, timestamp: null },
+  azurePlugin: { installed: false, checked: false, timestamp: null },
+  azureADPlugin: { installed: false, checked: false, timestamp: null },
+  azureMods: { installed: false, checked: false, timestamp: null },
+  azureCLI: { installed: false, checked: false, timestamp: null }
+};
+
+/**
+ * Load installation status from disk (if exists)
+ * Called on app startup to restore previous installation state
+ */
+function loadInstallationStatus() {
+  try {
+    if (fs.existsSync(INSTALLATION_STATUS_FILE)) {
+      const data = fs.readFileSync(INSTALLATION_STATUS_FILE, 'utf8');
+      const saved = JSON.parse(data);
+      // Merge with defaults (in case new fields added in future)
+      installationStatus = { ...installationStatus, ...saved };
+      console.log('[App] ✓ Loaded installation status from cache');
+    } else {
+      console.log('[App] No installation status cache found (first run)');
+    }
+  } catch (error) {
+    console.warn('[App] Failed to load installation status:', error.message);
+  }
+}
+
+/**
+ * Save installation status to disk
+ * Called after each installation/check to persist state
+ */
+function saveInstallationStatus() {
+  try {
+    const dir = path.dirname(INSTALLATION_STATUS_FILE);
+    fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(INSTALLATION_STATUS_FILE, JSON.stringify(installationStatus, null, 2), 'utf8');
+    console.log('[App] ✓ Saved installation status to cache');
+  } catch (error) {
+    console.warn('[App] Failed to save installation status:', error.message);
+  }
+}
+
+// Load installation status on startup
+loadInstallationStatus();
 
 // Backend API URL
 const BACKEND_SERVICE_URL = process.env.BACKEND_SERVICE_URL || 'https://orchestrate.ofofo.ai';
@@ -954,23 +1009,6 @@ ipcMain.handle('powerpipe-check-azure-plugin', async (event) => {
   }
 });
 
-// Ensure Azure Prerequisites Handler
-ipcMain.handle('azure-ensure-prerequisites', async (event, { tenantId, subscriptionId }) => {
-  try {
-    console.log('[IPC] Ensuring Azure prerequisites...');
-    
-    // Create progress callback to send updates to renderer
-    const progressCallback = (progress) => {
-      event.sender.send('azure-prerequisites-progress', progress);
-    };
-    
-    const result = await powerpipeService.ensureAzurePrerequisites(progressCallback, tenantId, subscriptionId);
-    return result;
-  } catch (error) {
-    console.error('Ensure Azure prerequisites error:', error);
-    return { success: false, error: error.message };
-  }
-});
 
 // Powerpipe Mod Management IPC Handlers
 ipcMain.handle('powerpipe-install-mod', async (event, data) => {
@@ -1128,13 +1166,26 @@ ipcMain.handle('subprocess-get-azure-subscriptions', async (event) => {
 // Setup Azure integration (full flow)
 ipcMain.handle('subprocess-setup-azure', async (event, data) => {
   try {
-    const { subscriptionId } = data;
+    const { subscriptionId, tenantId } = data;
     console.log('[IPC] Setting up Azure integration with subscription:', subscriptionId);
     
-    const result = await powerpipeService.setupAzureIntegration(subscriptionId);
+    // Use simple setup - no plugin install, no restart, no table fetch
+    // Plugin is already installed at startup, just configure for this subscription
+    const result = await powerpipeService.setupSubprocessSimple(subscriptionId, tenantId);
     return result;
   } catch (error) {
     console.error('Setup Azure integration error:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+// Configure plugin for subscription (lazy configuration)
+ipcMain.handle('subprocess-configure-plugin', async (event, subscriptionId) => {
+  try {
+    const result = await powerpipeService.configurePluginForSubscription(subscriptionId);
+    return result;
+  } catch (error) {
+    console.error('Configure plugin error:', error);
     return { success: false, error: error.message };
   }
 });
@@ -1202,7 +1253,60 @@ ipcMain.handle('dataroom-save-report', async (event, data) => {
   try {
     const { fileName, content, userId, subprocessId, subprocessName, modId, benchmarkId } = data;
     
-    // Create dataroom directory if it doesn't exist
+    // STEP 1: Generate UUID as file ID
+    const { randomUUID } = require('crypto');
+    const fileId = randomUUID();
+    console.log(`[Dataroom] Generated file ID: ${fileId}`);
+    
+    // Get user's organization/dataroom ID for Azure upload
+    let dataRoomId = userId; // Fallback to userId
+    try {
+      const orgId = await db.getUserOrganizationId(userId);
+      if (orgId) {
+        dataRoomId = orgId;
+        console.log(`[Dataroom] Using organization ID: ${dataRoomId}`);
+      }
+    } catch (orgError) {
+      console.warn('[Dataroom] Could not get organization ID, using userId:', orgError.message);
+    }
+    
+    // STEP 2: Upload to Azure Blob Storage FIRST
+    // Blob path structure: {dataroomId}/{fileId}
+    let blobUrl = null;
+    let encryptedBlobUrl = null;
+    
+    if (process.env.AZURE_STORAGE_CONNECTION_STRING) {
+      try {
+        const { uploadToAzureBlob } = require('./azure-upload.js');
+        const fileBuffer = Buffer.from(content, 'utf8');
+        
+        console.log(`[Dataroom] Uploading to Azure Blob Storage...`);
+        console.log(`[Dataroom] Blob path: ${dataRoomId}/${fileId}/${fileName}`);
+        
+        const uploadResult = await uploadToAzureBlob(
+          fileBuffer,
+          fileId, // Use UUID as file ID
+          dataRoomId,
+          'text/markdown',
+          fileName // Include filename in blob path
+        );
+        
+        blobUrl = uploadResult.url;
+        encryptedBlobUrl = uploadResult.encryptedUrl;
+        
+        console.log(`[Dataroom] ✓ Uploaded private blob to Azure: ${uploadResult.pathname}`);
+      } catch (azureError) {
+        console.error('[Dataroom] Azure upload failed:', azureError.message);
+        // If Azure upload fails, we should fail the entire operation
+        // since the file ID is already generated and expected in Azure
+        throw new Error(`Failed to upload to Azure: ${azureError.message}`);
+      }
+    } else {
+      console.log('[Dataroom] Azure Storage not configured, skipping cloud upload');
+      // If Azure is not configured, we can still save locally, but this is not ideal
+    }
+    
+    // STEP 3: Save file locally (backup)
     const fs = require('fs').promises;
     const path = require('path');
     const os = require('os');
@@ -1210,31 +1314,51 @@ ipcMain.handle('dataroom-save-report', async (event, data) => {
     const dataroomDir = path.join(os.homedir(), '.ofofo', 'dataroom', subprocessName || 'general');
     await fs.mkdir(dataroomDir, { recursive: true });
     
-    // Save the file
     const filePath = path.join(dataroomDir, fileName);
     await fs.writeFile(filePath, content, 'utf8');
-    
-    console.log(`[Dataroom] Report saved: ${filePath}`);
+    console.log(`[Dataroom] Report saved locally: ${filePath}`);
     
     // Get file size
     const stats = await fs.stat(filePath);
     const fileSize = stats.size;
     
-    // Insert into database using proper db module method
-    const fileRecord = await db.saveReportFile(userId, subprocessId, fileName, filePath, fileSize);
+    // STEP 4: Insert record into DataRoomFile table AFTER successful upload
+    // Use the UUID as the file ID
+    // Note: subprocessId is not stored in DataRoomFile - it's tracked in orgsubprocesses.results
+    const fileRecord = await db.saveReportFileWithId(
+      fileId, // Use UUID as ID
+      userId,
+      dataRoomId, // Organization/dataroom ID for web dataroom visibility
+      fileName, 
+      filePath, 
+      fileSize, 
+      blobUrl, 
+      encryptedBlobUrl
+    );
+    console.log(`[Dataroom] File record created in DataRoomFile with ID: ${fileRecord.id}`);
     
-    console.log(`[Dataroom] File record created with ID: ${fileRecord.id}`);
-    
-    // Update subprocess results to track this analysis
-    if (modId && benchmarkId) {
-      await db.updateSubprocessResults(subprocessId, modId, benchmarkId, fileRecord.id);
-      console.log(`[Dataroom] Updated subprocess results: mod=${modId}, benchmark=${benchmarkId}`);
+    // Update subprocess results to track this analysis with file URLs
+    // subprocessId is UUID string (from orgsubprocesses.id)
+    if (modId && benchmarkId && subprocessId) {
+      // Use the file id (UUID) from DataRoomFile
+      const fileIdentifier = fileRecord.id; // DataRoomFile.id is already UUID
+      await db.updateSubprocessResults(
+        subprocessId, // UUID string - orgsubprocesses.id is UUID type
+        modId, 
+        benchmarkId, 
+        fileIdentifier,
+        blobUrl,
+        encryptedBlobUrl
+      );
+      console.log(`[Dataroom] Updated subprocess results: subprocessId=${subprocessId}, mod=${modId}, benchmark=${benchmarkId}, fileId=${fileIdentifier}`);
     }
     
     return { 
       success: true, 
       filePath,
-      fileId: fileRecord.id
+      fileId: fileRecord.id,
+      blobUrl: blobUrl || undefined,
+      encryptedBlobUrl: encryptedBlobUrl || undefined
     };
   } catch (error) {
     console.error('[Dataroom] Save report error:', error);
@@ -1245,6 +1369,26 @@ ipcMain.handle('dataroom-save-report', async (event, data) => {
 // Register all IPC handlers before app is ready
 console.log('[IPC] Registering IPC handlers...');
 
+// Get installation status
+ipcMain.handle('get-installation-status', async () => {
+  return {
+    success: true,
+    status: installationStatus
+  };
+});
+
+// Handle uncaught exceptions to prevent app crash
+process.on('uncaughtException', (error) => {
+  console.error('[App] Uncaught Exception:', error);
+  console.error('[App] Stack:', error.stack);
+  // Don't exit - let the app continue
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('[App] Unhandled Rejection at:', promise, 'reason:', reason);
+  // Don't exit - let the app continue
+});
+
 app.whenReady().then(async () => {
   console.log('[IPC] App ready, initializing...');
   console.log('[App] ========================================');
@@ -1252,16 +1396,41 @@ app.whenReady().then(async () => {
   console.log('[App] ========================================');
   
   try {
-    // STEP 1: Install Powerpipe and Steampipe binaries
-    console.log('[App] Step 1: Installing Powerpipe and Steampipe...');
-    const installResult = await powerpipeInstaller.autoInstall();
+    // STEP 1: Install Powerpipe and Steampipe binaries (checks before installing)
+    if (!powerpipeInstaller) {
+      console.error('[App] ✗ Powerpipe installer not available - modules failed to load');
+      throw new Error('Required modules not loaded');
+    }
+    
+    console.log('[App] Step 1: Checking Powerpipe and Steampipe installation...');
+    let installResult;
+    try {
+      installResult = await powerpipeInstaller.autoInstall();
+    } catch (installError) {
+      console.error('[App] ✗ Installation error:', installError);
+      installResult = { success: false, error: installError.message };
+    }
     
     if (!installResult.success) {
       console.error('[App] ✗ Failed to install Powerpipe/Steampipe:', installResult.error);
-      createWindow(); // Still create window
-      return;
+      console.warn('[App] Continuing anyway - app will work but some features may be unavailable');
+      // Don't return - continue with other installations
+      installationStatus.powerpipe = { installed: false, checked: true, timestamp: Date.now(), error: installResult.error };
+      installationStatus.steampipe = { installed: false, checked: true, timestamp: Date.now(), error: installResult.error };
+      saveInstallationStatus();
+    } else {
+      // Update installation status cache (only if installation was successful)
+      if (installResult.alreadyInstalled) {
+        console.log('[App] ✓ Powerpipe and Steampipe already installed (skipped)');
+        installationStatus.powerpipe = { installed: true, checked: true, timestamp: Date.now() };
+        installationStatus.steampipe = { installed: true, checked: true, timestamp: Date.now() };
+      } else {
+        console.log('[App] ✓ Powerpipe and Steampipe installed');
+        installationStatus.powerpipe = { installed: true, checked: true, timestamp: Date.now() };
+        installationStatus.steampipe = { installed: true, checked: true, timestamp: Date.now() };
+      }
+      saveInstallationStatus();
     }
-    console.log('[App] ✓ Powerpipe and Steampipe installed');
     
     // STEP 2: Create symlinks for terminal access (non-critical)
     try {
@@ -1273,50 +1442,127 @@ app.whenReady().then(async () => {
       console.warn('[App] Symlink creation skipped (non-critical)');
     }
     
-    // STEP 3: Install Steampipe plugins (Azure + Azure AD)
-    console.log('[App] Step 2: Installing Steampipe plugins...');
+    // STEP 3: Check and install Steampipe plugins (Azure + Azure AD) - ONLY IF NOT INSTALLED
+    console.log('[App] Step 2: Checking Steampipe plugins...');
     try {
-      await powerpipeService.installAzurePlugin();
-      console.log('[App] ✓ Azure plugin installed');
-      
-      await powerpipeService.installAzureADPlugin();
-      console.log('[App] ✓ Azure AD plugin installed');
-    } catch (error) {
-      console.warn('[App] Plugin installation failed (will retry when needed):', error.message);
-    }
-    
-    // STEP 4: Install popular Powerpipe mods
-    console.log('[App] Step 3: Installing popular compliance mods...');
-    
-    const { AZURE_MODS } = require('./azure-mods');
-    
-    // Install each mod individually with 'powerpipe mod install <mod-name>'
-    for (const mod of AZURE_MODS) {
-      try {
-        console.log(`[App]   Installing ${mod.name}...`);
-        const result = await powerpipeService.installPowerpipeMod(mod.repo);
-        if (result.success) {
-          console.log(`[App]   ✓ ${mod.name} installed`);
+      // Check Azure plugin first
+      const azurePluginCheck = await powerpipeService.checkAzurePluginInstalled();
+      if (azurePluginCheck.installed) {
+        console.log('[App] ✓ Azure plugin already installed');
+        installationStatus.azurePlugin = { installed: true, checked: true, timestamp: Date.now() };
+      } else {
+        console.log('[App] Installing Azure plugin...');
+        const installResult = await powerpipeService.installAzurePlugin();
+        if (installResult.success) {
+          console.log('[App] ✓ Azure plugin installed');
+          installationStatus.azurePlugin = { installed: true, checked: true, timestamp: Date.now() };
         } else {
-          console.warn(`[App]   ⚠️  ${mod.name} installation failed:`, result.error);
+          console.warn('[App] ⚠️  Azure plugin installation failed:', installResult.error);
+          installationStatus.azurePlugin = { installed: false, checked: true, timestamp: Date.now() };
         }
+      }
+      
+      // Azure AD plugin - install (it handles "already installed" internally)
+      console.log('[App] Checking Azure AD plugin...');
+      const azureADResult = await powerpipeService.installAzureADPlugin();
+      if (azureADResult.success) {
+        console.log('[App] ✓ Azure AD plugin ready');
+        installationStatus.azureADPlugin = { installed: true, checked: true, timestamp: Date.now() };
+      } else {
+        console.warn('[App] ⚠️  Azure AD plugin skipped (non-critical)');
+        installationStatus.azureADPlugin = { installed: false, checked: true, timestamp: Date.now() };
+      }
+      
+        saveInstallationStatus();
       } catch (error) {
-        console.warn(`[App]   ⚠️  ${mod.name} error:`, error.message);
+        console.warn('[App] Plugin check/installation failed:', error.message);
       }
     }
     
-    console.log('[App]   ✓ Mod installation complete');
+    // STEP 4: Check and install popular Powerpipe mods - ONLY IF NOT INSTALLED
+    if (!powerpipeService) {
+      console.warn('[App] ⚠️  Powerpipe service not available - skipping mod installation');
+    } else {
+      console.log('[App] Step 3: Checking compliance mods...');
+      
+      try {
+        const { AZURE_MODS } = require('./azure-mods');
+        
+        // Check each mod before installing
+        for (const mod of AZURE_MODS) {
+      try {
+        const modCheck = await powerpipeService.checkModInstalled(mod.repo);
+        if (modCheck) {
+          console.log(`[App]   ✓ ${mod.name} already installed`);
+        } else {
+          console.log(`[App]   Installing ${mod.name}...`);
+          const result = await powerpipeService.installPowerpipeMod(mod.repo);
+          if (result.success) {
+            console.log(`[App]   ✓ ${mod.name} installed`);
+          } else {
+            console.warn(`[App]   ⚠️  ${mod.name} installation failed:`, result.error);
+          }
+        }
+      } catch (error) {
+        console.warn(`[App]   ⚠️  ${mod.name} check/install error:`, error.message);
+      }
+    }
+    
+    console.log('[App]   ✓ Mod check/installation complete');
+    
+    // STEP 5: Check and install Azure CLI if needed (ONLY IF NOT INSTALLED)
+    console.log('[App] Step 4: Checking Azure CLI...');
+    try {
+      const cliCheck = await powerpipeService.checkAzureCLI();
+      if (cliCheck.installed) {
+        console.log('[App] ✓ Azure CLI already installed');
+        installationStatus.azureCLI = { installed: true, checked: true, timestamp: Date.now() };
+      } else {
+        console.log('[App] Azure CLI not found, installing...');
+        const installResult = await powerpipeService.installAzureCLI();
+        if (installResult.success) {
+          console.log('[App] ✓ Azure CLI installed');
+          installationStatus.azureCLI = { installed: true, checked: true, timestamp: Date.now() };
+        } else {
+          console.warn('[App] ⚠️  Azure CLI installation failed (user can install manually):', installResult.error);
+          installationStatus.azureCLI = { installed: false, checked: true, timestamp: Date.now() };
+        }
+      }
+      saveInstallationStatus();
+    } catch (error) {
+        console.warn('[App] Azure CLI check failed (non-critical):', error.message);
+        installationStatus.azureCLI = { installed: false, checked: true, timestamp: Date.now() };
+        saveInstallationStatus();
+      }
+    }
     
     console.log('[App] ========================================');
-    console.log('[App] ✓ ALL COMPONENTS INSTALLED');
+    console.log('[App] ✓ ALL COMPONENTS CHECKED/INSTALLED');
     console.log('[App] ========================================');
     
   } catch (error) {
     console.error('[App] Installation failed:', error);
+    console.error('[App] Error stack:', error.stack);
+    // Continue anyway - create window so user can see error
   }
   
   console.log('[App] Creating window...');
-  createWindow();
+  try {
+    createWindow();
+  } catch (windowError) {
+    console.error('[App] Failed to create window:', windowError);
+    console.error('[App] Error stack:', windowError.stack);
+    // Try to show error dialog
+    try {
+      const { dialog } = require('electron');
+      dialog.showErrorBox('Application Error', 
+        `Failed to start application:\n\n${windowError.message}\n\nPlease check the console logs for details.`
+      );
+    } catch (dialogError) {
+      // If dialog also fails, at least log it
+      console.error('[App] Failed to show error dialog:', dialogError);
+    }
+  }
 });
 
 app.on('window-all-closed', () => {

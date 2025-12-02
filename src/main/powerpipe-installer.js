@@ -330,12 +330,39 @@ async function installSteampipe() {
     const tempFile = path.join(paths.installDir, useZip ? 'steampipe.zip' : 'steampipe.tar.gz');
     
     console.log('[Installer] Downloading Steampipe from:', downloadUrl);
-    await downloadFile(downloadUrl, tempFile);
     
-    // Verify download
-    const stats = await fs.stat(tempFile);
+    // Ensure temp directory exists
+    await fs.mkdir(paths.installDir, { recursive: true });
+    
+    // Download file
+    try {
+      await downloadFile(downloadUrl, tempFile);
+    } catch (downloadError) {
+      // Clean up partial download if it exists
+      try {
+        await fs.unlink(tempFile);
+      } catch (unlinkError) {
+        // Ignore unlink errors
+      }
+      throw new Error(`Failed to download Steampipe: ${downloadError.message}`);
+    }
+    
+    // Verify download - check if file exists first
+    let stats;
+    try {
+      stats = await fs.stat(tempFile);
+    } catch (statError) {
+      throw new Error(`Downloaded file not found at ${tempFile}. Download may have failed.`);
+    }
+    
     console.log('[Installer] Downloaded file size:', stats.size, 'bytes');
     if (stats.size < 1000) {
+      // Clean up invalid file
+      try {
+        await fs.unlink(tempFile);
+      } catch (unlinkError) {
+        // Ignore unlink errors
+      }
       throw new Error(`Downloaded file is too small (${stats.size} bytes) - download may have failed`);
     }
     
@@ -347,33 +374,102 @@ async function installSteampipe() {
     }
     
     // Clean up archive file
-    await fs.unlink(tempFile);
+    try {
+      await fs.unlink(tempFile);
+    } catch (unlinkError) {
+      console.warn('[Installer] Could not remove temp file:', unlinkError.message);
+    }
     
     // Verify binary exists after extraction
+    // The binary might be in a subdirectory or directly in installDir
+    let steampipePath = null;
+    
+    // First, check if binary is directly in installDir
+    const directPath = path.join(paths.installDir, binaryName);
     try {
-      await fs.access(paths.steampipe);
-    } catch (error) {
-      throw new Error(
-        `Steampipe binary not found after extraction at ${paths.steampipe}. ` +
-        `The archive may not contain the expected binary structure.`
-      );
+      await fs.access(directPath);
+      steampipePath = directPath;
+      console.log('[Installer] Found binary at direct path:', steampipePath);
+    } catch (directError) {
+      // Check expected paths
+      try {
+        await fs.access(paths.steampipeFallback);
+        steampipePath = paths.steampipeFallback;
+        console.log('[Installer] Found binary at fallback path:', steampipePath);
+      } catch (fallbackError) {
+        // Check bundled path (shouldn't exist, but check anyway)
+        try {
+          await fs.access(paths.steampipe);
+          steampipePath = paths.steampipe;
+          console.log('[Installer] Found binary at bundled path:', steampipePath);
+        } catch (bundledError) {
+          // List directory to see what was extracted
+          try {
+            const files = await fs.readdir(paths.installDir);
+            console.log('[Installer] Files in install directory:', files);
+            
+            // Check subdirectories
+            for (const file of files) {
+              const filePath = path.join(paths.installDir, file);
+              const fileStat = await fs.stat(filePath);
+              if (fileStat.isDirectory()) {
+                const subFiles = await fs.readdir(filePath);
+                console.log(`[Installer] Files in subdirectory ${file}:`, subFiles);
+                // Check if binary is in subdirectory
+                const subBinaryPath = path.join(filePath, binaryName);
+                try {
+                  await fs.access(subBinaryPath);
+                  // Move binary to installDir root
+                  const finalPath = path.join(paths.installDir, binaryName);
+                  await fs.rename(subBinaryPath, finalPath);
+                  steampipePath = finalPath;
+                  console.log('[Installer] Moved binary from subdirectory to:', steampipePath);
+                  break;
+                } catch (subError) {
+                  // Continue searching
+                }
+              } else if (file === binaryName || file === 'steampipe') {
+                // Found it!
+                steampipePath = filePath;
+                console.log('[Installer] Found binary:', steampipePath);
+                break;
+              }
+            }
+          } catch (listError) {
+            console.error('[Installer] Error listing directory:', listError);
+          }
+          
+          if (!steampipePath) {
+            throw new Error(
+              `Steampipe binary not found after extraction. ` +
+              `Expected at ${paths.steampipeFallback} or ${directPath}. ` +
+              `The archive may not contain the expected binary structure.`
+            );
+          }
+        }
+      }
+    }
+    
+    // Update path if we used fallback
+    if (steampipePath !== paths.steampipe) {
+      console.log('[Installer] Using fallback path:', steampipePath);
     }
     
     // Make binary executable (Unix-like systems)
     if (platform !== 'win32') {
-      await fs.chmod(paths.steampipe, 0o755);
+      await fs.chmod(steampipePath, 0o755);
     }
     
     // Verify binary is executable by trying to get version
     try {
-      const { stdout } = await execAsync(`"${paths.steampipe}" --version`);
+      const { stdout } = await execAsync(`"${steampipePath}" --version`);
       console.log('[Installer] Steampipe version:', stdout.trim());
     } catch (error) {
       console.warn('[Installer] Could not verify Steampipe version (this is OK if binary exists)');
     }
     
-    console.log('[Installer] ✓ Steampipe installed successfully');
-    return { success: true, path: paths.steampipe };
+    console.log('[Installer] ✓ Steampipe installed successfully at:', steampipePath);
+    return { success: true, path: steampipePath };
   } catch (error) {
     console.error('[Installer] Steampipe installation failed:', error);
     throw error;

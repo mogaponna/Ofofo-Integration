@@ -646,8 +646,8 @@ async function ensureSubprocessesTable() {
 ensureSubprocessesTable();
 
 /**
- * Note: DataRoomFile table already exists in the main database with UUID
- * Using the table from neon.tech, no need to create it here
+ * Note: We use the DataRoomFile table (main table for dataroom files)
+ * This is the primary table used by the web application
  */
 
 /**
@@ -763,14 +763,17 @@ async function deleteSubprocess(id) {
 
 /**
  * Update subprocess results (track mod/benchmark analysis)
+ * Stores fileId, blobUrl, encryptedBlobUrl for later retrieval
+ * @param {string} id - UUID of the subprocess (from orgsubprocesses.id)
  */
-async function updateSubprocessResults(id, modId, benchmarkId, fileId) {
+async function updateSubprocessResults(id, modId, benchmarkId, fileId, blobUrl = null, encryptedBlobUrl = null) {
   const db = getPool();
   if (!db) {
     throw new Error('Database connection not available');
   }
 
   try {
+    // id is UUID string (from orgsubprocesses.id which is UUID type)
     // Get current results
     const current = await db.query(`SELECT results FROM orgsubprocesses WHERE id = $1`, [id]);
     const results = current.rows[0]?.results || {};
@@ -780,9 +783,11 @@ async function updateSubprocessResults(id, modId, benchmarkId, fileId) {
       results[modId] = {};
     }
     
-    // Add benchmark analysis record
+    // Add benchmark analysis record with file URLs
     results[modId][benchmarkId] = {
       fileId,
+      blobUrl: blobUrl || null,
+      encryptedBlobUrl: encryptedBlobUrl || null,
       analyzedAt: new Date().toISOString(),
       status: 'completed'
     };
@@ -795,6 +800,8 @@ async function updateSubprocessResults(id, modId, benchmarkId, fileId) {
       RETURNING *
     `, [JSON.stringify(results), id]);
     
+    console.log(`[DB] Updated subprocess results: mod=${modId}, benchmark=${benchmarkId}, fileId=${fileId}`);
+    
     return result.rows[0];
   } catch (error) {
     console.error('[DB] Error updating subprocess results:', error);
@@ -803,7 +810,98 @@ async function updateSubprocessResults(id, modId, benchmarkId, fileId) {
 }
 
 /**
- * Save a report file to dataroom
+ * Save a report file to DataRoomFile table
+ * This is called AFTER successful Azure upload
+ * Uses the main DataRoomFile table (not dataroom_files)
+ * 
+ * @param {string} fileId - UUID for the file (used as id)
+ * @param {string} userId - User ID (UUID)
+ * @param {string} organizationId - DataRoom ID (UUID, for web dataroom visibility)
+ * @param {string} fileName - File name
+ * @param {string} filePath - Local file path (not stored in DataRoomFile, kept for reference)
+ * @param {number} fileSize - File size in bytes
+ * @param {string|null} blobUrl - Azure blob URL (encrypted)
+ * @param {string|null} encryptedBlobUrl - Encrypted blob URL
+ */
+async function saveReportFileWithId(fileId, userId, organizationId, fileName, filePath, fileSize, blobUrl = null, encryptedBlobUrl = null) {
+  const db = getPool();
+  if (!db) {
+    throw new Error('Database connection not available');
+  }
+
+  try {
+    // DataRoomFile table structure:
+    // - id: UUID (PRIMARY KEY, auto-generated or use fileId)
+    // - name: VARCHAR(255) NOT NULL
+    // - userId: UUID NOT NULL
+    // - dataRoomId: UUID NULL (FK to DataRoom.id)
+    // - folderId: UUID NULL
+    // - blobUrl: TEXT NOT NULL (encrypted URL - required!)
+    // - encryptedURL: TEXT NULL
+    // - size: VARCHAR(20) NULL
+    // - type: VARCHAR(150) NULL
+    // - inVectorStore: BOOLEAN DEFAULT false
+    // - createdAt: TIMESTAMP NOT NULL
+    // - updatedAt: TIMESTAMP NULL
+
+    // Both blobUrl and encryptedURL should store the encrypted URL
+    // blobUrl is NOT NULL, so we must provide it
+    // Use encryptedBlobUrl (encrypted version) for both columns
+    let encryptedUrlForStorage = encryptedBlobUrl;
+    
+    // If we only have plain blobUrl, encrypt it
+    if (!encryptedUrlForStorage && blobUrl) {
+      console.log('[DB] Encrypting plain blobUrl');
+      const { encryptBlobUrl } = require('./encryption');
+      encryptedUrlForStorage = encryptBlobUrl(blobUrl);
+    }
+    
+    if (!encryptedUrlForStorage) {
+      throw new Error('Encrypted blob URL is required for DataRoomFile table (blobUrl is NOT NULL)');
+    }
+
+    // Convert fileSize to string (size column is VARCHAR(20))
+    const sizeStr = fileSize ? String(fileSize) : null;
+
+    // Determine file type
+    const fileType = fileName.endsWith('.md') ? 'text/markdown' : 'application/octet-stream';
+
+    console.log(`[DB] Inserting into DataRoomFile: id=${fileId}, userId=${userId}, dataRoomId=${organizationId}, name=${fileName}`);
+
+    // Insert into DataRoomFile table
+    // Use fileId as the id (UUID), or let it auto-generate
+    const result = await db.query(`
+      INSERT INTO "DataRoomFile" (
+        id,
+        name,
+        "userId",
+        "dataRoomId",
+        "folderId",
+        "blobUrl",
+        "encryptedURL",
+        size,
+        type,
+        "inVectorStore",
+        "createdAt",
+        "updatedAt"
+      ) VALUES ($1, $2, $3, $4, NULL, $5, $5, $6, $7, false, NOW(), NOW())
+      RETURNING *
+    `, [fileId, fileName, userId, organizationId, encryptedUrlForStorage, sizeStr, fileType]);
+
+    console.log(`[DB] ✓ File saved to DataRoomFile with id: ${result.rows[0].id}`);
+    
+    return result.rows[0];
+  } catch (error) {
+    console.error('[DB] Error saving report file to DataRoomFile:', error);
+    throw error;
+  }
+}
+
+/**
+ * Legacy function - kept for backward compatibility
+ * Save a report file to DataRoomFile table
+ * Note: This function doesn't include blob URLs - use saveReportFileWithId instead
+ * @deprecated Use saveReportFileWithId instead for full functionality
  */
 async function saveReportFile(userId, subprocessId, fileName, filePath, fileSize) {
   const db = getPool();
@@ -812,15 +910,51 @@ async function saveReportFile(userId, subprocessId, fileName, filePath, fileSize
   }
 
   try {
+    // Generate UUID for the file
+    const { randomUUID } = require('crypto');
+    const fileId = randomUUID();
+    
+    // Get organization ID (fallback to userId)
+    let dataRoomId = userId;
+    try {
+      const orgId = await getUserOrganizationId(userId);
+      if (orgId) {
+        dataRoomId = orgId;
+      }
+    } catch (orgError) {
+      console.warn('[DB] Could not get organization ID for legacy saveReportFile:', orgError.message);
+    }
+
+    // DataRoomFile requires blobUrl (NOT NULL), so we need to provide a placeholder
+    // This is a legacy function, so we'll use a placeholder encrypted URL
+    const placeholderBlobUrl = 'legacy-file-placeholder'; // This should be replaced with actual blob URL
+    
+    const sizeStr = fileSize ? String(fileSize) : null;
+    const fileType = fileName.endsWith('.md') ? 'text/markdown' : 'application/octet-stream';
+
+    console.warn('[DB] Using legacy saveReportFile - blobUrl is required but not provided. Consider using saveReportFileWithId instead.');
+    
     const result = await db.query(`
-      INSERT INTO dataroom_files (user_id, subprocess_id, file_name, file_path, file_type, file_size, created_at) 
-      VALUES ($1, $2, $3, $4, 'markdown', $5, CURRENT_TIMESTAMP)
+      INSERT INTO "DataRoomFile" (
+        id,
+        name,
+        "userId",
+        "dataRoomId",
+        "folderId",
+        "blobUrl",
+        "encryptedURL",
+        size,
+        type,
+        "inVectorStore",
+        "createdAt",
+        "updatedAt"
+      ) VALUES ($1, $2, $3, $4, NULL, $5, NULL, $6, $7, false, NOW(), NOW())
       RETURNING *
-    `, [userId, subprocessId, fileName, filePath, fileSize]);
+    `, [fileId, fileName, userId, dataRoomId, placeholderBlobUrl, sizeStr, fileType]);
     
     return result.rows[0];
   } catch (error) {
-    console.error('[DB] Error saving report file:', error);
+    console.error('[DB] Error saving report file (legacy):', error);
     throw error;
   }
 }
@@ -845,5 +979,6 @@ module.exports = {
   deleteSubprocess,
   // Dataroom
   saveReportFile,
+  saveReportFileWithId,
 };
 

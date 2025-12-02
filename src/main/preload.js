@@ -469,6 +469,9 @@ contextBridge.exposeInMainWorld('electron', {
       setupAzure: async (data) => {
         return await ipcRenderer.invoke('subprocess-setup-azure', data);
       },
+      configurePlugin: async (subscriptionId) => {
+        return await ipcRenderer.invoke('subprocess-configure-plugin', subscriptionId);
+      },
       getAzureTables: async () => {
         return await ipcRenderer.invoke('subprocess-get-azure-tables');
       },
@@ -491,8 +494,8 @@ contextBridge.exposeInMainWorld('electron', {
       return await ipcRenderer.invoke('dataroom-save-report', data);
     },
   },
-  // Azure initialization
-  ensureAzurePrerequisites: async (subscriptionId) => {
-    return await ipcRenderer.invoke('azure-ensure-prerequisites', subscriptionId);
+  // Get installation status
+  getInstallationStatus: async () => {
+    return await ipcRenderer.invoke('get-installation-status');
   },
 });

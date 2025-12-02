@@ -1,7 +1,9 @@
 const { spawn, exec } = require('child_process');
 const { promisify } = require('util');
 const fs = require('fs').promises;
+const fsSync = require('fs');
 const path = require('path');
+const os = require('os');
 const execAsync = promisify(exec);
 const powerpipeInstaller = require('./powerpipe-installer');
 
@@ -418,6 +420,101 @@ async function configureAzurePlugin(subscriptionId) {
   }
 }
 
+// Cache for plugin configuration per subscription
+const pluginConfigCache = new Map();
+
+// Configuration cache file for persistence
+const CONFIG_CACHE_FILE = path.join(os.homedir(), '.ofofo', 'plugin-config-cache.json');
+
+/**
+ * Load cached configurations from disk on startup
+ */
+function loadConfigCache() {
+  try {
+    if (fsSync.existsSync(CONFIG_CACHE_FILE)) {
+      const data = fsSync.readFileSync(CONFIG_CACHE_FILE, 'utf8');
+      const cache = JSON.parse(data);
+      Object.keys(cache).forEach(subId => {
+        pluginConfigCache.set(subId, cache[subId]);
+      });
+      console.log(`[Config Cache] Loaded ${pluginConfigCache.size} cached configurations`);
+    }
+  } catch (error) {
+    console.warn('[Config Cache] Failed to load cache:', error.message);
+  }
+}
+
+/**
+ * Save configuration cache to disk
+ */
+function saveConfigCache() {
+  try {
+    const cache = {};
+    pluginConfigCache.forEach((value, key) => {
+      cache[key] = value;
+    });
+    const dir = path.dirname(CONFIG_CACHE_FILE);
+    fsSync.mkdirSync(dir, { recursive: true });
+    fsSync.writeFileSync(CONFIG_CACHE_FILE, JSON.stringify(cache, null, 2), 'utf8');
+  } catch (error) {
+    console.warn('[Config Cache] Failed to save cache:', error.message);
+  }
+}
+
+// Load cache on module load
+loadConfigCache();
+
+/**
+ * Configure Azure plugin for a specific subscription (FAST - just writes config file)
+ * This is called when adding a subprocess - configuration persists
+ * Uses caching to avoid reconfiguring the same subscription
+ */
+async function configurePluginForSubscription(subscriptionId) {
+  try {
+    // Check cache first
+    if (pluginConfigCache.has(subscriptionId)) {
+      const cached = pluginConfigCache.get(subscriptionId);
+      // Verify config file still exists
+      if (cached.configFile && fsSync.existsSync(cached.configFile)) {
+        console.log(`[Steampipe] Plugin already configured for subscription: ${subscriptionId}`);
+        return { success: true, cached: true, configFile: cached.configFile };
+      } else {
+        // Config file missing, remove from cache
+        pluginConfigCache.delete(subscriptionId);
+        saveConfigCache();
+      }
+    }
+    
+    // Set Azure subscription as default (so Steampipe uses it)
+    const setSubResult = await setAzureSubscription(subscriptionId);
+    if (!setSubResult.success) {
+      return { success: false, error: 'Failed to set Azure subscription: ' + setSubResult.error };
+    }
+    
+    // Configure plugin (just writes config file - FAST)
+    const configResult = await configureAzurePlugin(subscriptionId);
+    if (!configResult.success) {
+      return configResult;
+    }
+    
+    // Cache configuration
+    pluginConfigCache.set(subscriptionId, {
+      configured: true,
+      timestamp: Date.now(),
+      configFile: configResult.configFile
+    });
+    
+    // Save cache to disk
+    saveConfigCache();
+    
+    console.log(`[Steampipe] ✓ Plugin configured for subscription: ${subscriptionId}`);
+    return { success: true, cached: false, configFile: configResult.configFile };
+  } catch (error) {
+    console.error('[Steampipe] Failed to configure plugin for subscription:', error);
+    return { success: false, error: error.message };
+  }
+}
+
 /**
  * Restart Steampipe service to load new configuration
  */
@@ -604,63 +701,16 @@ async function querySteampipe(query) {
  * Setup Azure integration
  * This is called when user adds Azure subprocess
  */
+/**
+ * Setup Azure integration - DEPRECATED
+ * This function is kept for backward compatibility but is no longer used
+ * New code should use setupSubprocessSimple() instead
+ * @deprecated Use setupSubprocessSimple() instead
+ */
 async function setupAzureIntegration(subscriptionId) {
-  try {
-    console.log('[Azure Setup] Starting Azure integration setup...');
-    console.log('[Azure Setup] Using subscription:', subscriptionId);
-    
-    // Note: Authentication and CLI check are already done in the UI flow
-    // We skip those steps here to avoid double authentication
-    
-    // 1. Set the selected subscription (user already authenticated)
-    if (subscriptionId) {
-      const setSubResult = await setAzureSubscription(subscriptionId);
-      if (!setSubResult.success) {
-        return setSubResult;
-      }
-    }
-    
-    // 2. Get subscriptions (to return in response)
-    const subsResult = await getAzureSubscriptions();
-    if (!subsResult.success) {
-      return subsResult;
-    }
-    
-    // 3. Install Azure plugin
-    const pluginResult = await installAzurePlugin();
-    if (!pluginResult.success) {
-      return pluginResult;
-    }
-    
-    // 4. Configure Azure plugin
-    const configResult = await configureAzurePlugin(subscriptionId);
-    if (!configResult.success) {
-      return configResult;
-    }
-    
-    // 5. Restart Steampipe service
-    const restartResult = await restartSteampipeService();
-    if (!restartResult.success) {
-      return restartResult;
-    }
-    
-    // 6. Get available tables
-    const tablesResult = await getAzureTables();
-    if (!tablesResult.success) {
-      return tablesResult;
-    }
-    
-    console.log('[Azure Setup] ✓ Azure integration setup complete');
-    return {
-      success: true,
-      subscriptions: subsResult.subscriptions,
-      tables: tablesResult.tables,
-      message: 'Azure integration setup complete'
-    };
-  } catch (error) {
-    console.error('[Azure Setup] Setup failed:', error);
-    return { success: false, error: error.message };
-  }
+  console.warn('[Azure Setup] setupAzureIntegration() is deprecated, use setupSubprocessSimple() instead');
+  // Delegate to simple setup for backward compatibility
+  return await setupSubprocessSimple(subscriptionId, null);
 }
 
 /**
@@ -725,6 +775,42 @@ async function runBenchmark(benchmarkName = 'azure_compliance.benchmark.cis_v200
     return { success: true, results };
   } catch (error) {
     console.error('[Powerpipe] Failed to run benchmark:', error);
+    return { success: false, error: error.message };
+  }
+}
+
+/**
+ * Simple subprocess setup - just authenticate, get subscriptions, configure, save
+ * NO plugin installation, NO service restart, NO table fetching
+ * This is called when adding a new subprocess - fast and simple
+ */
+async function setupSubprocessSimple(subscriptionId, tenantId) {
+  try {
+    console.log('[Subprocess Setup] Starting simple setup for subscription:', subscriptionId);
+    
+    // Step 1: Set subscription as default (so Steampipe uses it)
+    const setSubResult = await setAzureSubscription(subscriptionId);
+    if (!setSubResult.success) {
+      return { success: false, error: 'Failed to set Azure subscription: ' + setSubResult.error };
+    }
+    
+    // Step 2: Configure plugin for this subscription (FAST - just writes config file)
+    const configResult = await configurePluginForSubscription(subscriptionId);
+    if (!configResult.success) {
+      return { success: false, error: 'Failed to configure plugin: ' + configResult.error };
+    }
+    
+    // Step 3: Get subscriptions to return (for UI display)
+    const subsResult = await getAzureSubscriptions();
+    
+    console.log('[Subprocess Setup] ✓ Simple setup complete');
+    return {
+      success: true,
+      subscriptions: subsResult.subscriptions || [],
+      message: 'Subprocess configured successfully'
+    };
+  } catch (error) {
+    console.error('[Subprocess Setup] Failed:', error);
     return { success: false, error: error.message };
   }
 }
@@ -1310,103 +1396,6 @@ async function testAzureConnection() {
   }
 }
 
-/**
- * Ensure all prerequisites are ready for Azure integration
- * Checks and installs: Powerpipe, Steampipe, Azure CLI, Azure Plugin
- * Tests connection before allowing queries (Turbot's approach)
- */
-async function ensureAzurePrerequisites(progressCallback, tenantId, subscriptionId) {
-  console.log('[Azure Setup] Configuring Azure integration...');
-  
-  const steps = [
-    'Verifying Azure authentication...',
-    'Configuring Steampipe for your subscription...',
-    'Testing connection...'
-  ];
-  
-  let currentStep = 0;
-  
-  const updateProgress = (message) => {
-    if (progressCallback) {
-      progressCallback({ step: currentStep, message, steps });
-    }
-  };
-
-  try {
-    // STEP 1: Verify Azure CLI authentication (should already be done in ToolsTab)
-    updateProgress(steps[currentStep]);
-    const authResult = await authenticateWithAzureCLI();
-    if (!authResult.success) {
-      throw new Error('Azure authentication failed');
-    }
-    currentStep++;
-    
-    // STEP 2: Configure Steampipe for this subscription
-    updateProgress(steps[currentStep]);
-    
-    // Start Steampipe service if not running
-    await initializeSteampipe();
-    
-    // Wait for service to be fully ready
-    console.log('[Azure Setup] Waiting for Steampipe service...');
-    let retries = 10;
-    while (retries > 0) {
-      const ready = await checkSteampipeServiceReady();
-      if (ready) break;
-      retries--;
-      if (retries === 0) throw new Error('Service startup timed out');
-      await new Promise(resolve => setTimeout(resolve, 2000));
-    }
-    
-    // Configure plugin with subscription
-    if (subscriptionId) {
-      await configurePluginConnection(subscriptionId, tenantId);
-    }
-    
-    // Restart to load config
-    await restartSteampipeService();
-    
-    // Wait for restart
-    retries = 10;
-    while (retries > 0) {
-      const ready = await checkSteampipeServiceReady();
-      if (ready) break;
-      retries--;
-      if (retries === 0) throw new Error('Service restart timed out');
-      await new Promise(resolve => setTimeout(resolve, 2000));
-    }
-    
-    currentStep++;
-    
-    // STEP 3: Test connection
-    updateProgress(steps[currentStep]);
-    const testResult = await testAzureConnection();
-    if (!testResult.success) {
-      throw new Error(testResult.error || 'Connection test failed');
-    }
-    currentStep++;
-    
-    return { 
-      success: true,
-      message: 'Azure integration ready'
-    };
-    
-  } catch (error) {
-    console.error('[Azure Setup] Failed:', error);
-    if (progressCallback) {
-      progressCallback({ 
-        step: currentStep, 
-        message: steps[currentStep],
-        steps,
-        error: error.message 
-      });
-    }
-    return { 
-      success: false,
-      error: error.message 
-    };
-  }
-}
 
 module.exports = {
   STEAMPIPE_PLUGINS,
@@ -1417,6 +1406,8 @@ module.exports = {
   getAzureSubscriptions,
   setAzureSubscription,
   setupAzureIntegration,
+  setupSubprocessSimple,
+  configurePluginForSubscription,
   getAzureTables,
   querySteampipe,
   installAzureComplianceMod,
@@ -1427,8 +1418,6 @@ module.exports = {
   checkAzurePluginInstalled,
   installAzurePlugin,
   installAzureADPlugin,
-  // Prerequisites
-  ensureAzurePrerequisites,
   // New mod functions
   installPowerpipeMod,
   checkModInstalled,
