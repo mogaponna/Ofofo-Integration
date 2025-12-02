@@ -16,12 +16,34 @@ if (typeof global.crypto === 'undefined') {
 // Note: URL.searchParams should be available natively in Node.js 20+ and Electron 28
 // No polyfill needed - if there's an issue, it's likely something else
 
-// Load .env based on environment
-if (!isDev) {
-  // In production, load from resources (bundled with app)
-  const envPath = path.join(process.resourcesPath, '.env');
-  console.log('[App] Looking for .env at:', envPath);
-  console.log('[App] File exists:', fs.existsSync(envPath));
+// Load .env - try multiple locations to handle both dev and production
+// Priority: 1) Project root (for dev and non-packaged runs), 2) Resources (for packaged apps)
+const envPaths = [
+  path.join(__dirname, '../../.env'),           // Project root (most common)
+  path.join(process.cwd(), '.env'),              // Current working directory
+  path.join(app.getAppPath(), '.env'),           // App path
+  path.join(process.resourcesPath, '.env'),      // Resources (packaged apps)
+  path.join(os.homedir(), '.ofofo', '.env'),     // User home fallback
+];
+
+let envPath = null;
+let envLoaded = false;
+
+// Try each path in order
+for (const testPath of envPaths) {
+  if (fs.existsSync(testPath)) {
+    envPath = testPath;
+    console.log('[App] Found .env at:', envPath);
+    break;
+  }
+}
+
+if (!envPath) {
+  console.error('[App] ERROR: .env file not found in any location!');
+  console.error('[App] Checked paths:', envPaths);
+  console.error('[App] This means environment variables are not loaded!');
+} else {
+  console.log('[App] Loading .env from:', envPath);
   
   if (fs.existsSync(envPath)) {
     const result = require('dotenv').config({ path: envPath });
@@ -41,14 +63,21 @@ if (!isDev) {
     console.log('[App] DATABASE_URL length:', dbUrl ? dbUrl.length : 0);
     console.log('[App] DATABASE_URL preview:', dbUrl ? dbUrl.substring(0, 50) + '...' : 'N/A');
     
-    // If dotenv didn't load it, try manual parsing as fallback
-    if (!connStr) {
-      console.warn('[App] Connection string not loaded by dotenv, trying manual parse...');
+    // If dotenv didn't load variables, try manual parsing as fallback
+    // This is critical for production builds where .env might not be loaded correctly
+    if (!connStr || !dbUrl) {
+      console.warn('[App] Some environment variables not loaded by dotenv, trying manual parse...');
       try {
         const envContent = fs.readFileSync(envPath, 'utf8');
         const lines = envContent.split('\n');
+        
         for (const line of lines) {
-          if (line.trim().startsWith('AZURE_COMMUNICATION_SERVICE_CONNECTION_STRING=')) {
+          // Skip comments and empty lines
+          const trimmedLine = line.trim();
+          if (!trimmedLine || trimmedLine.startsWith('#')) continue;
+          
+          // Parse AZURE_COMMUNICATION_SERVICE_CONNECTION_STRING
+          if (!connStr && trimmedLine.startsWith('AZURE_COMMUNICATION_SERVICE_CONNECTION_STRING=')) {
             const match = line.match(/AZURE_COMMUNICATION_SERVICE_CONNECTION_STRING=(.+)/);
             if (match && match[1]) {
               connStr = match[1].trim();
@@ -58,39 +87,94 @@ if (!isDev) {
                 connStr = connStr.slice(1, -1);
               }
               process.env.AZURE_COMMUNICATION_SERVICE_CONNECTION_STRING = connStr;
-              console.log('[App] Manually loaded connection string, length:', connStr.length);
-              break;
+              console.log('[App] ✓ Manually loaded AZURE_COMMUNICATION_SERVICE_CONNECTION_STRING, length:', connStr.length);
             }
           }
+          
+          // Parse DATABASE_URL (CRITICAL for database connection)
+          if (!dbUrl && trimmedLine.startsWith('DATABASE_URL=')) {
+            // Use a more robust regex that handles the entire value (including special chars)
+            const match = line.match(/^DATABASE_URL=(.*)$/);
+            if (match && match[1]) {
+              dbUrl = match[1].trim();
+              // Remove quotes if present (but preserve everything else)
+              if ((dbUrl.startsWith('"') && dbUrl.endsWith('"')) || 
+                  (dbUrl.startsWith("'") && dbUrl.endsWith("'"))) {
+                dbUrl = dbUrl.slice(1, -1);
+              }
+              // IMPORTANT: Use the URL as-is - don't modify it
+              // Special characters in password should already be URL-encoded in the .env file
+              process.env.DATABASE_URL = dbUrl;
+              console.log('[App] ✓ Manually loaded DATABASE_URL, length:', dbUrl.length);
+              console.log('[App] DATABASE_URL preview:', dbUrl.substring(0, 80) + '...');
+              // Check if password might need encoding
+              if (dbUrl.includes('@') && dbUrl.split('@').length > 1) {
+                const passwordPart = dbUrl.split('@')[0].split(':').pop();
+                if (passwordPart && (passwordPart.includes(' ') || passwordPart.includes('#'))) {
+                  console.warn('[App] ⚠️  Password in DATABASE_URL contains special characters!');
+                  console.warn('[App] If authentication fails, ensure password is URL-encoded in .env file');
+                }
+              }
+            }
+          }
+          
+          // Stop if both are loaded
+          if (connStr && dbUrl) break;
+        }
+        
+        // Verify after manual parsing
+        if (!process.env.DATABASE_URL) {
+          console.error('[App] ✗ CRITICAL: DATABASE_URL still not loaded after manual parsing!');
+          console.error('[App] This will cause database connection failures.');
+        } else {
+          console.log('[App] ✓ DATABASE_URL successfully loaded');
         }
       } catch (parseError) {
         console.error('[App] Failed to manually parse .env:', parseError.message);
+        console.error('[App] Error stack:', parseError.stack);
       }
     }
-  } else {
-    console.error('[App] ERROR: .env file not found at:', envPath);
-    console.error('[App] This means environment variables are not loaded!');
-    // Try fallback locations
-    const fallbackPaths = [
-      path.join(__dirname, '../../.env'),
-      path.join(app.getAppPath(), '.env'),
-    ];
-    for (const fallbackPath of fallbackPaths) {
-      if (fs.existsSync(fallbackPath)) {
-        console.log('[App] Found .env at fallback location:', fallbackPath);
-        require('dotenv').config({ path: fallbackPath });
-        break;
+  // Always manually parse DATABASE_URL as backup (critical for database connection)
+  if (!process.env.DATABASE_URL && envPath) {
+    console.warn('[App] DATABASE_URL not loaded by dotenv, trying manual parse...');
+    try {
+      const envContent = fs.readFileSync(envPath, 'utf8');
+      const lines = envContent.split('\n');
+      for (const line of lines) {
+        const trimmedLine = line.trim();
+        if (!trimmedLine || trimmedLine.startsWith('#')) continue;
+        if (trimmedLine.startsWith('DATABASE_URL=')) {
+          const match = line.match(/DATABASE_URL=(.+)/);
+          if (match && match[1]) {
+            let dbUrl = match[1].trim();
+            // Remove quotes if present
+            if ((dbUrl.startsWith('"') && dbUrl.endsWith('"')) || 
+                (dbUrl.startsWith("'") && dbUrl.endsWith("'"))) {
+              dbUrl = dbUrl.slice(1, -1);
+            }
+            process.env.DATABASE_URL = dbUrl;
+            console.log('[App] ✓ Manually loaded DATABASE_URL, length:', dbUrl.length);
+            console.log('[App] DATABASE_URL preview:', dbUrl.substring(0, 80) + '...');
+            break;
+          }
+        }
       }
+    } catch (parseError) {
+      console.error('[App] Failed to manually parse DATABASE_URL:', parseError.message);
     }
   }
-} else {
-  // In development, load from project root
-  require('dotenv').config();
-  console.log('[App] Loaded .env from project root');
+  
+  // Final verification
+  if (!process.env.DATABASE_URL) {
+    console.error('[App] ✗ CRITICAL: DATABASE_URL not loaded!');
+    console.error('[App] Database connection will fail. Please check your .env file.');
+  } else {
+    console.log('[App] ✓ DATABASE_URL is loaded and ready');
+  }
 }
 
-// CRITICAL: Load modules AFTER polyfill is set up
-// This ensures all modules use the patched URL
+// Load database and email service modules
+// Electron 28 uses Node.js 20+ which has native URL.searchParams support
 const db = require('./db');
 const emailService = require('./email-service');
 const powerpipeService = require('./powerpipe-service');
@@ -309,11 +393,7 @@ ipcMain.handle('db-send-otp', async (event, data) => {
     } catch (dbError) {
       console.error('[OTP] Database error:', dbError.message);
       console.error('[OTP] Database error stack:', dbError.stack);
-      // Check if it's a searchParams error
-      if (dbError.message && dbError.message.includes('searchParams')) {
-        console.error('[OTP] SEARCHPARAMS ERROR IN DATABASE OPERATION!');
-        console.error('[OTP] This suggests the pg library or connection string parsing is the issue');
-      }
+      // Database connection errors are handled below
       // If DB fails, still try to send email (OTP can be verified manually if needed)
       if (dbError.message.includes('timeout') || dbError.message.includes('Connection')) {
         return { success: false, error: 'Database connection timeout. Please check your connection and try again.' };
@@ -352,16 +432,7 @@ ipcMain.handle('db-send-otp', async (event, data) => {
       console.error('[OTP] Email error stack:', emailError.stack);
       console.error('[OTP] Full error object:', JSON.stringify(emailError, Object.getOwnPropertyNames(emailError)));
       
-      // Check if it's a searchParams error
-      if (emailError.message && emailError.message.includes('searchParams')) {
-        console.error('[OTP] SEARCHPARAMS ERROR IN EMAIL SERVICE!');
-        console.error('[OTP] This suggests the Azure SDK is the issue');
-        console.error('[OTP] Azure SDK version:', require('@azure/communication-email/package.json')?.version || 'unknown');
-        return { 
-          success: false, 
-          error: 'Email service temporarily unavailable. Please check your Azure Communication Services configuration or contact support.' 
-        };
-      }
+      // Email service errors are handled below
       
       // If email fails but DB succeeded, still return success (user can request resend)
       if (emailError.message && emailError.message.includes('timeout')) {
@@ -383,22 +454,9 @@ ipcMain.handle('db-send-otp', async (event, data) => {
   } catch (error) {
     console.error('[OTP] Unexpected error in db-send-otp handler:', error.message);
     console.error('[OTP] Error stack:', error.stack);
-    // Check if it's a searchParams error
-    if (error.message && error.message.includes('searchParams')) {
-      console.error('[OTP] SEARCHPARAMS ERROR DETECTED IN HANDLER!');
-      console.error('[OTP] Error details:', JSON.stringify(error, Object.getOwnPropertyNames(error)));
-    }
     const errorMessage = error.message || 'Failed to send OTP';
     if (errorMessage.includes('timeout') || errorMessage.includes('Connection')) {
       return { success: false, error: 'Connection timeout. Please check your database connection and try again.' };
-    }
-    // Check if it's a searchParams error and provide user-friendly message
-    if (errorMessage.includes('searchParams') || errorMessage.includes('Cannot read properties of undefined')) {
-      console.error('[OTP] searchParams error detected in handler');
-      return { 
-        success: false, 
-        error: 'Email service temporarily unavailable. Please check your Azure Communication Services configuration or contact support.' 
-      };
     }
     return { success: false, error: errorMessage };
   }
@@ -435,15 +493,9 @@ ipcMain.handle('check-email-service', async () => {
       // Try to initialize it directly to see what error we get
       try {
         const { EmailClient } = require('@azure/communication-email');
-        // Test URL polyfill first
-        const testUrl = new global.URL('https://example.com');
-        if (!testUrl.searchParams) {
-          emailClientError = 'URL polyfill not working - searchParams missing';
-          emailClientStatus = 'polyfill_failed';
-        } else {
-          const testClient = new EmailClient(connStr.trim());
-          emailClientStatus = 'can_initialize';
-        }
+        // Test EmailClient initialization
+        const testClient = new EmailClient(connStr.trim());
+        emailClientStatus = 'can_initialize';
       } catch (initError) {
         emailClientError = initError.message;
         emailClientStatus = 'init_failed';
@@ -1597,3 +1649,4 @@ app.on('web-contents-created', (event, contents) => {
     require('electron').shell.openExternal(navigationUrl);
   });
 });
+}

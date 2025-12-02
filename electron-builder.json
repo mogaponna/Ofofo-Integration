@@ -19,7 +19,7 @@
       "filter": ["**/*"]
     },
     {
-      "from": ".env.production",
+      "from": ".env",
       "to": ".env"
     }
   ],

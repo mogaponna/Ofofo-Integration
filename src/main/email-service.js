@@ -98,18 +98,12 @@ function getEmailClient() {
       console.log('[Email] Connection string length:', connectionString.length);
       console.log('[Email] Connection string preview:', connectionString.substring(0, 20) + '...');
       
-      // Wrap EmailClient initialization to catch URL/searchParams errors
       try {
         emailClient = new EmailClient(connectionString);
         console.log('[Email] Azure Communication Services client initialized successfully');
       } catch (initError) {
         console.error('[Email] EmailClient constructor error:', initError.message);
         console.error('[Email] Error stack:', initError.stack);
-        if (initError.message && initError.message.includes('searchParams')) {
-          console.error('[Email] SEARCHPARAMS ERROR IN EmailClient CONSTRUCTOR!');
-          // Try to provide a more helpful error
-          throw new Error('Azure SDK initialization failed due to URL parsing issue. Please check your connection string format.');
-        }
         throw initError;
       }
     } catch (error) {
@@ -169,53 +163,8 @@ async function sendOTPEmail(email, otp) {
       console.log(`[Email] Email message prepared`);
 
       console.log(`[Email] Step 3: Calling client.beginSend()...`);
-      let poller;
-      try {
-        // Verify URL polyfill is working before calling Azure SDK
-        const testUrl = new global.URL('https://example.com');
-        if (!testUrl.searchParams) {
-          console.error(`[Email] URL polyfill not working! searchParams missing`);
-          throw new Error('URL polyfill failed - searchParams not available');
-        }
-        console.log(`[Email] URL polyfill verified - searchParams available`);
-        
-        // Wrap in Promise to catch any synchronous errors
-        poller = await Promise.resolve().then(() => client.beginSend(emailMessage));
-        console.log(`[Email] beginSend() completed, got poller`);
-      } catch (beginError) {
-        console.error(`[Email] ERROR in beginSend():`, beginError.message);
-        console.error(`[Email] beginSend() error stack:`, beginError.stack);
-        
-        // Check if it's a searchParams error - but try to fix it first
-        const errorMsg = beginError.message || String(beginError);
-        if (errorMsg.includes('searchParams') || errorMsg.includes('Cannot read properties of undefined')) {
-          console.error(`[Email] SEARCHPARAMS ERROR DETECTED!`);
-          console.error(`[Email] Attempting to re-apply polyfill and retry...`);
-          
-          // Re-apply polyfill to URL prototype
-          const urlModule = require('url');
-          const OriginalURLSearchParams = urlModule.URLSearchParams;
-          const URLPrototype = global.URL.prototype;
-          
-          if (!URLPrototype.searchParams) {
-            Object.defineProperty(URLPrototype, 'searchParams', {
-              get() {
-                return new OriginalURLSearchParams(this.search || '');
-              },
-              enumerable: true,
-              configurable: true,
-            });
-          }
-          
-          // Retry the call
-          console.log(`[Email] Retrying beginSend() after polyfill re-application...`);
-          poller = await client.beginSend(emailMessage);
-          console.log(`[Email] Retry successful!`);
-        } else {
-          // Not a searchParams error, re-throw it
-          throw beginError;
-        }
-      }
+      const poller = await client.beginSend(emailMessage);
+      console.log(`[Email] beginSend() completed, got poller`);
 
       console.log(`[Email] Step 4: Polling until done...`);
       let result;
@@ -225,9 +174,6 @@ async function sendOTPEmail(email, otp) {
       } catch (pollError) {
         console.error(`[Email] ERROR in pollUntilDone():`, pollError.message);
         console.error(`[Email] pollUntilDone() error stack:`, pollError.stack);
-        if (pollError.message && pollError.message.includes('searchParams')) {
-          console.error(`[Email] SEARCHPARAMS ERROR IN pollUntilDone()!`);
-        }
         throw pollError;
       }
       
@@ -242,15 +188,6 @@ async function sendOTPEmail(email, otp) {
     console.error(`[Email] Failed to send OTP email via Azure:`, error.message);
     console.error(`[Email] Full error:`, error);
     console.error(`[Email] Error stack:`, error.stack);
-    
-    // Check for searchParams error
-    if (error.message && error.message.includes('searchParams')) {
-      console.error(`[Email] ========================================`);
-      console.error(`[Email] SEARCHPARAMS ERROR DETECTED!`);
-      console.error(`[Email] Error message:`, error.message);
-      console.error(`[Email] Error name:`, error.name);
-      console.error(`[Email] ========================================`);
-    }
     
     if (error.code === 'DomainNotLinked') {
       console.error(`[Email] Domain linking issue detected. Please ensure:`);
